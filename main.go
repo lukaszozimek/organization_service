@@ -1,25 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"github.com/gorilla/mux"
+	rt "github.com/lukaszozimek/license_service/router"
+	"log"
 	"net/http"
 	"os"
 )
 
 func main() {
 
-	router := mux.NewRouter()
-
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
+
 	if port == "" {
 		port = "8000" //localhost
 	}
 
-	fmt.Println(port)
+	log.Printf("Server started")
 
-	err := http.ListenAndServe(":"+port, router) //Launch the app, visit localhost:8000/api
-	if err != nil {
-		fmt.Print(err)
-	}
+	router := rt.NewRouter()
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
