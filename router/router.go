@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/lukaszozimek/organization_service/controller"
 	"net/http"
 	"strings"
 )
