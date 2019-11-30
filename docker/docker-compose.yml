@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  postgres:
+    #   Use the Docker Image postgres. This will pull the newest release.
+    image: postgres:11.1-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'db_organization_service'
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d/
+
+  license:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - .:/go/src/github.com/kujtimiihoxha/todo-gokit-demo/examples
+    container_name: license
+    ports:
+      - 8800:8081
+
+
+volumes:
+  database_data:
+    driver: local
