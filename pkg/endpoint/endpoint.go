@@ -3,6 +3,7 @@ package endpoint
 import (
 	"context"
 	"github.com/go-kit/kit/endpoint"
+	"github.com/lukaszozimek/organization_service/pkg/model"
 	"github.com/lukaszozimek/organization_service/pkg/service"
 )
 
@@ -151,7 +152,7 @@ type Failure interface {
 }
 
 // CreateUserOrganizationById implements Service. Primarily useful in a client.
-func (e Endpoints) CreateUserOrganizationById(ctx context.Context, organization model.Organization) (organization model.Organization, err error) {
+func (e Endpoints) CreateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
 	request := CreateUserOrganizationByIdRequest{Organization: organization}
 	response, err := e.CreateUserOrganizationByIdEndpoint(ctx, request)
 	if err != nil {
@@ -171,7 +172,7 @@ func (e Endpoints) DeleteUserOrganizationById(ctx context.Context, organizationI
 }
 
 // GetUserOrganizationById implements Service. Primarily useful in a client.
-func (e Endpoints) GetUserOrganizationById(ctx context.Context, organizationId string) (organization model.Organization, err error) {
+func (e Endpoints) GetUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	request := GetUserOrganizationByIdRequest{OrganizationId: organizationId}
 	response, err := e.GetUserOrganizationByIdEndpoint(ctx, request)
 	if err != nil {
@@ -191,7 +192,7 @@ func (e Endpoints) GetUserOrganizations(ctx context.Context) (organization []mod
 }
 
 // UpdateUserOrganizationById implements Service. Primarily useful in a client.
-func (e Endpoints) UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (organization model.Organization, err error) {
+func (e Endpoints) UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
 	request := UpdateUserOrganizationByIdRequest{Organization: organization}
 	response, err := e.UpdateUserOrganizationByIdEndpoint(ctx, request)
 	if err != nil {

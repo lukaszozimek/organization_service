@@ -3,20 +3,21 @@ package service
 import (
 	"context"
 	"github.com/go-kit/kit/log"
+	"github.com/lukaszozimek/organization_service/pkg/model"
 )
 
 // Middleware describes a service middleware.
-type Middleware func(OrganizationServiceService) OrganizationServiceService
+type Middleware func(OrganizationService) OrganizationService
 
 type loggingMiddleware struct {
 	logger log.Logger
-	next   OrganizationServiceService
+	next   OrganizationService
 }
 
 // LoggingMiddleware takes a logger as a dependency
-// and returns a OrganizationServiceService Middleware.
+// and returns a OrganizationService Middleware.
 func LoggingMiddleware(logger log.Logger) Middleware {
-	return func(next OrganizationServiceService) OrganizationServiceService {
+	return func(next OrganizationService) OrganizationService {
 		return &loggingMiddleware{logger, next}
 	}
 
