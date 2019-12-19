@@ -95,8 +95,7 @@ func makeGetUserOrganizationsHandler(m *mux.Router, endpoints endpoint.Endpoints
 // JSON-encoded request from the HTTP request body.
 func decodeGetUserOrganizationsRequest(_ context.Context, r *http1.Request) (interface{}, error) {
 	req := endpoint.GetUserOrganizationsRequest{}
-	err := json.NewDecoder(r.Body).Decode(&req)
-	return req, err
+	return req, nil
 }
 
 // encodeGetUserOrganizationsResponse is a transport/http.EncodeResponseFunc that encodes
@@ -153,8 +152,8 @@ func encodeHealthResponse(ctx context.Context, w http1.ResponseWriter, response 
 	return
 }
 func decodeHealthRequest(_ context.Context, r *http1.Request) (interface{}, error) {
-
-	return "", nil
+	req := endpoint.GetUserOrganizationsRequest{}
+	return req, nil
 }
 func ErrorEncoder(_ context.Context, err error, w http1.ResponseWriter) {
 	w.WriteHeader(err2code(err))
