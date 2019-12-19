@@ -18,24 +18,33 @@ type OrganizationService interface {
 type basicOrganizationService struct{}
 
 func (b *basicOrganizationService) CreateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
-	// TODO implement the business logic of CreateUserOrganizationById
+	db := model.GetDB()
+	db.Create(&organization)
 	return organization, err
 }
 func (b *basicOrganizationService) DeleteUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
-	// TODO implement the business logic of DeleteUserOrganizationById
-	return res, err
+	db := model.GetDB()
+	var organization model.Organization
+	db.Where("id = ?", organizationId).Find(&organization)
+	db.Delete(organization)
+	return organization, err
 }
 func (b *basicOrganizationService) GetUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
-	// TODO implement the business logic of GetUserOrganizationById
+	db := model.GetDB()
+	var organization model.Organization
+	db.Where("id = ?", organizationId).Find(&organization)
 	return res, err
 }
 func (b *basicOrganizationService) GetUserOrganizations(ctx context.Context) (organization []model.Organization, err error) {
-	// TODO implement the business logic of GetUserOrganizations
-	return organization, err
+	db := model.GetDB()
+	var organizations []model.Organization
+	db.Find(&organizations)
+	return organizations, nil
 }
 func (b *basicOrganizationService) UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
-	// TODO implement the business logic of UpdateUserOrganizationById
-	return res, err
+	db := model.GetDB()
+	db.Update(&organization)
+	return organization, err
 }
 func (b *basicOrganizationService) Health(ctx context.Context) (rs string, err error) {
 	return "true", err
