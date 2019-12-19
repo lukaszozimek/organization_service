@@ -63,7 +63,7 @@ func encodeDeleteUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 
 // makeGetUserOrganizationByIdHandler creates the handler logic
 func makeGetUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("GET").Path("/api/v1/organization/{organizationId}").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetUserOrganizationByIdEndpoint, decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
+	m.Methods("GET").Path("/api/v1/organization/{organizationId}/").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetUserOrganizationByIdEndpoint, decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
 }
 
 // decodeGetUserOrganizationByIdRequest is a transport/http.DecodeRequestFunc that decodes a
