@@ -15,17 +15,19 @@ type Endpoints struct {
 	GetUserOrganizationByIdEndpoint    endpoint.Endpoint
 	GetUserOrganizationsEndpoint       endpoint.Endpoint
 	UpdateUserOrganizationByIdEndpoint endpoint.Endpoint
+	Health                             endpoint.Endpoint
 }
 
 // New returns a Endpoints struct that wraps the provided service, and wires in all of the
 // expected endpoint middlewares
-func New(s service.OrganizationServiceService, mdw map[string][]endpoint.Middleware) Endpoints {
+func New(s service.OrganizationService, mdw map[string][]endpoint.Middleware) Endpoints {
 	eps := Endpoints{
 		CreateUserOrganizationByIdEndpoint: MakeCreateUserOrganizationByIdEndpoint(s),
 		DeleteUserOrganizationByIdEndpoint: MakeDeleteUserOrganizationByIdEndpoint(s),
 		GetUserOrganizationByIdEndpoint:    MakeGetUserOrganizationByIdEndpoint(s),
 		GetUserOrganizationsEndpoint:       MakeGetUserOrganizationsEndpoint(s),
 		UpdateUserOrganizationByIdEndpoint: MakeUpdateUserOrganizationByIdEndpoint(s),
+		Health:                             MakeHealthEndpoint(s),
 	}
 	for _, m := range mdw["CreateUserOrganizationById"] {
 		eps.CreateUserOrganizationByIdEndpoint = m(eps.CreateUserOrganizationByIdEndpoint)
@@ -41,6 +43,9 @@ func New(s service.OrganizationServiceService, mdw map[string][]endpoint.Middlew
 	}
 	for _, m := range mdw["UpdateUserOrganizationById"] {
 		eps.UpdateUserOrganizationByIdEndpoint = m(eps.UpdateUserOrganizationByIdEndpoint)
+	}
+	for _, m := range mdw["Health"] {
+		eps.Health = m(eps.Health)
 	}
 	return eps
 }

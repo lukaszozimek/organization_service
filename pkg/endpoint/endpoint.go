@@ -19,7 +19,7 @@ type CreateUserOrganizationByIdResponse struct {
 }
 
 // MakeCreateUserOrganizationByIdEndpoint returns an endpoint that invokes CreateUserOrganizationById on the service.
-func MakeCreateUserOrganizationByIdEndpoint(s service.OrganizationServiceService) endpoint.Endpoint {
+func MakeCreateUserOrganizationByIdEndpoint(s service.OrganizationService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(CreateUserOrganizationByIdRequest)
 		organization, err := s.CreateUserOrganizationById(ctx, req.Organization)
@@ -47,7 +47,7 @@ type DeleteUserOrganizationByIdResponse struct {
 }
 
 // MakeDeleteUserOrganizationByIdEndpoint returns an endpoint that invokes DeleteUserOrganizationById on the service.
-func MakeDeleteUserOrganizationByIdEndpoint(s service.OrganizationServiceService) endpoint.Endpoint {
+func MakeDeleteUserOrganizationByIdEndpoint(s service.OrganizationService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(DeleteUserOrganizationByIdRequest)
 		organization, err := s.DeleteUserOrganizationById(ctx, req.OrganizationId)
@@ -75,7 +75,7 @@ type GetUserOrganizationByIdResponse struct {
 }
 
 // MakeGetUserOrganizationByIdEndpoint returns an endpoint that invokes GetUserOrganizationById on the service.
-func MakeGetUserOrganizationByIdEndpoint(s service.OrganizationServiceService) endpoint.Endpoint {
+func MakeGetUserOrganizationByIdEndpoint(s service.OrganizationService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(GetUserOrganizationByIdRequest)
 		organization, err := s.GetUserOrganizationById(ctx, req.OrganizationId)
@@ -101,7 +101,7 @@ type GetUserOrganizationsResponse struct {
 }
 
 // MakeGetUserOrganizationsEndpoint returns an endpoint that invokes GetUserOrganizations on the service.
-func MakeGetUserOrganizationsEndpoint(s service.OrganizationServiceService) endpoint.Endpoint {
+func MakeGetUserOrganizationsEndpoint(s service.OrganizationService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		organization, err := s.GetUserOrganizations(ctx)
 		return GetUserOrganizationsResponse{
@@ -128,7 +128,7 @@ type UpdateUserOrganizationByIdResponse struct {
 }
 
 // MakeUpdateUserOrganizationByIdEndpoint returns an endpoint that invokes UpdateUserOrganizationById on the service.
-func MakeUpdateUserOrganizationByIdEndpoint(s service.OrganizationServiceService) endpoint.Endpoint {
+func MakeUpdateUserOrganizationByIdEndpoint(s service.OrganizationService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(UpdateUserOrganizationByIdRequest)
 		organization, err := s.UpdateUserOrganizationById(ctx, req.Organization)
@@ -149,6 +149,22 @@ func (r UpdateUserOrganizationByIdResponse) Failed() error {
 // failed, and if so encode them using a separate write path based on the error.
 type Failure interface {
 	Failed() error
+}
+
+func MakeHealthEndpoint(s service.OrganizationService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		rs, err := s.Health(ctx)
+		return HealthResponse{
+			Err: err,
+			Rs:  rs,
+		}, nil
+	}
+}
+
+// ResetFinishResponse collects the response parameters for the ResetFinish method.
+type HealthResponse struct {
+	Rs  string `json:"rs"`
+	Err error  `json:"err"`
 }
 
 // CreateUserOrganizationById implements Service. Primarily useful in a client.

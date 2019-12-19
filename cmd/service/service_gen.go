@@ -26,6 +26,7 @@ func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[stri
 		"GetUserOrganizationById":    {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "GetUserOrganizationById", logger))},
 		"GetUserOrganizations":       {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "GetUserOrganizations", logger))},
 		"UpdateUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "UpdateUserOrganizationById", logger))},
+		"Health":                     {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Health", logger))},
 	}
 	return options
 }
@@ -35,12 +36,14 @@ func addDefaultEndpointMiddleware(logger log.Logger, duration *prometheus.Summar
 	mw["GetUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "GetUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "GetUserOrganizationById"))}
 	mw["GetUserOrganizations"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "GetUserOrganizations")), endpoint.InstrumentingMiddleware(duration.With("method", "GetUserOrganizations"))}
 	mw["UpdateUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "UpdateUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "UpdateUserOrganizationById"))}
+	mw["Health"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "Health")), endpoint.InstrumentingMiddleware(duration.With("method", "Health"))}
+
 }
 func addDefaultServiceMiddleware(logger log.Logger, mw []service.Middleware) []service.Middleware {
 	return append(mw, service.LoggingMiddleware(logger))
 }
 func addEndpointMiddlewareToAllMethods(mw map[string][]endpoint1.Middleware, m endpoint1.Middleware) {
-	methods := []string{"CreateUserOrganizationById", "DeleteUserOrganizationById", "GetUserOrganizationById", "GetUserOrganizations", "UpdateUserOrganizationById"}
+	methods := []string{"CreateUserOrganizationById", "DeleteUserOrganizationById", "GetUserOrganizationById", "GetUserOrganizations", "UpdateUserOrganizationById", "Health"}
 	for _, v := range methods {
 		mw[v] = append(mw[v], m)
 	}

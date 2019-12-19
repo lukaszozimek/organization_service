@@ -7,34 +7,38 @@ import (
 
 // OrganizationService describes the service.
 type OrganizationService interface {
-	CreateUserOrganizationById(ctx context.Context, organization model.Organization) (organization model.Organization, err error)
-	DeleteUserOrganizationById(ctx context.Context, organizationId string) (organization model.Organization, err error)
-	GetUserOrganizationById(ctx context.Context, organizationId string) (organization model.Organization, err error)
+	CreateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error)
+	DeleteUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error)
+	GetUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error)
 	GetUserOrganizations(ctx context.Context) (organization []model.Organization, err error)
-	UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (organization model.Organization, err error)
+	UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error)
+	Health(ctx context.Context) (rs string, err error)
 }
 
 type basicOrganizationService struct{}
 
-func (b *basicOrganizationService) CreateUserOrganizationById(ctx context.Context, organization model.Organization) (organization model.Organization, err error) {
+func (b *basicOrganizationService) CreateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
 	// TODO implement the business logic of CreateUserOrganizationById
 	return organization, err
 }
-func (b *basicOrganizationService) DeleteUserOrganizationById(ctx context.Context, organizationId string) (organization model.Organization, err error) {
+func (b *basicOrganizationService) DeleteUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	// TODO implement the business logic of DeleteUserOrganizationById
-	return organization, err
+	return res, err
 }
-func (b *basicOrganizationService) GetUserOrganizationById(ctx context.Context, organizationId string) (organization model.Organization, err error) {
+func (b *basicOrganizationService) GetUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	// TODO implement the business logic of GetUserOrganizationById
-	return organization, err
+	return res, err
 }
 func (b *basicOrganizationService) GetUserOrganizations(ctx context.Context) (organization []model.Organization, err error) {
 	// TODO implement the business logic of GetUserOrganizations
 	return organization, err
 }
-func (b *basicOrganizationService) UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (organization model.Organization, err error) {
+func (b *basicOrganizationService) UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
 	// TODO implement the business logic of UpdateUserOrganizationById
-	return organization, err
+	return res, err
+}
+func (b *basicOrganizationService) Health(ctx context.Context) (rs string, err error) {
+	return "true", err
 }
 
 // NewBasicOrganizationServiceService returns a naive, stateless implementation of OrganizationService.

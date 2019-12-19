@@ -135,6 +135,27 @@ func encodeUpdateUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 	err = json.NewEncoder(w).Encode(response)
 	return
 }
+
+// makeHealthHandler creates the handler logic
+func makeHealthHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
+	m.Methods("GET").Path("/api/v1/organization/health").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.Health, decodeHealthRequest, encodeHealthResponse, options...)))
+}
+
+// encodeResetFinishResponse is a transport/http.EncodeResponseFunc that encodes
+// the response as JSON to the response writer
+func encodeHealthResponse(ctx context.Context, w http1.ResponseWriter, response interface{}) (err error) {
+	if f, ok := response.(endpoint.Failure); ok && f.Failed() != nil {
+		ErrorEncoder(ctx, f.Failed(), w)
+		return nil
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	err = json.NewEncoder(w).Encode(response)
+	return
+}
+func decodeHealthRequest(_ context.Context, r *http1.Request) (interface{}, error) {
+
+	return "", nil
+}
 func ErrorEncoder(_ context.Context, err error, w http1.ResponseWriter) {
 	w.WriteHeader(err2code(err))
 	json.NewEncoder(w).Encode(errorWrapper{Error: err.Error()})

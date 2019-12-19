@@ -43,7 +43,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&model.Organization{}) //Database migration
+	db.Debug().AutoMigrate(&Organization{}) //Database migration
 }
 
 //returns a handle to the DB object

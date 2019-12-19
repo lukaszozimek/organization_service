@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: 'user'
       POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'db_licence_service'
+      POSTGRES_DB: 'db_organization_service'
     volumes:
       - ./init:/docker-entrypoint-initdb.d/
 

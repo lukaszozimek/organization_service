@@ -17,5 +17,6 @@ func NewHTTPHandler(endpoints endpoint.Endpoints, options map[string][]http.Serv
 	makeGetUserOrganizationByIdHandler(m, endpoints, options["GetUserOrganizationById"])
 	makeGetUserOrganizationsHandler(m, endpoints, options["GetUserOrganizations"])
 	makeUpdateUserOrganizationByIdHandler(m, endpoints, options["UpdateUserOrganizationById"])
+	makeHealthHandler(m, endpoints, options["Health"])
 	return m
 }

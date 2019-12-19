@@ -6,21 +6,17 @@ import (
 	endpoint1 "github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics/prometheus"
-	lightsteptracergo "github.com/lightstep/lightstep-tracer-go"
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
 	"github.com/lukaszozimek/organization_service/pkg/http"
 	"github.com/lukaszozimek/organization_service/pkg/service"
 	"github.com/oklog/oklog/pkg/group"
 	opentracinggo "github.com/opentracing/opentracing-go"
-	zipkingoopentracing "github.com/openzipkin/zipkin-go-opentracing"
 	prometheus1 "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net"
 	http1 "net/http"
 	"os"
 	"os/signal"
-	"sourcegraph.com/sourcegraph/appdash"
-	"sourcegraph.com/sourcegraph/appdash/opentracing"
 	"syscall"
 )
 
@@ -32,6 +28,9 @@ var logger log.Logger
 var fs = flag.NewFlagSet("organization_service", flag.ExitOnError)
 var debugAddr = fs.String("debug.addr", ":8080", "Debug and metrics listen address")
 var httpAddr = fs.String("http-addr", ":8081", "HTTP listen address")
+var consulAddr = flag.String("consul.addr", "localhost", "consul address")
+var consulPort = flag.String("consul.port", "8500", "consul port")
+
 var grpcAddr = fs.String("grpc-addr", ":8082", "gRPC listen address")
 var thriftAddr = fs.String("thrift-addr", ":8083", "Thrift listen address")
 var thriftProtocol = fs.String("thrift-protocol", "binary", "binary, compact, json, simplejson")
@@ -49,35 +48,8 @@ func Run() {
 	logger = log.With(logger, "ts", log.DefaultTimestampUTC)
 	logger = log.With(logger, "caller", log.DefaultCaller)
 
-	//  Determine which tracer to use. We'll pass the tracer to all the
-	// components that use it, as a dependency
-	if *zipkinURL != "" {
-		logger.Log("tracer", "Zipkin", "URL", *zipkinURL)
-		collector, err := zipkingoopentracing.NewHTTPCollector(*zipkinURL)
-		if err != nil {
-			logger.Log("err", err)
-			os.Exit(1)
-		}
-		defer collector.Close()
-		recorder := zipkingoopentracing.NewRecorder(collector, false, "localhost:80", "organization_service")
-		tracer, err = zipkingoopentracing.NewTracer(recorder)
-		if err != nil {
-			logger.Log("err", err)
-			os.Exit(1)
-		}
-	} else if *lightstepToken != "" {
-		logger.Log("tracer", "LightStep")
-		tracer = lightsteptracergo.NewTracer(lightsteptracergo.Options{AccessToken: *lightstepToken})
-		defer lightsteptracergo.FlushLightStepTracer(tracer)
-	} else if *appdashAddr != "" {
-		logger.Log("tracer", "Appdash", "addr", *appdashAddr)
-		collector := appdash.NewRemoteCollector(*appdashAddr)
-		tracer = opentracing.NewTracer(collector)
-		defer collector.Close()
-	} else {
-		logger.Log("tracer", "none")
-		tracer = opentracinggo.GlobalTracer()
-	}
+	logger.Log("tracer", "none")
+	tracer = opentracinggo.GlobalTracer()
 
 	svc := service.New(getServiceMiddleware(logger))
 	eps := endpoint.New(svc, getEndpointMiddleware(logger))
@@ -90,6 +62,7 @@ func Run() {
 func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 	options := defaultHttpOptions(logger, tracer)
 	// Add your http options here
+	registar := Register(*consulAddr, *consulPort, "organization.service.consul", "8081")
 
 	httpHandler := http.NewHTTPHandler(endpoints, options)
 	httpListener, err := net.Listen("tcp", *httpAddr)
@@ -97,9 +70,11 @@ func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 		logger.Log("transport", "HTTP", "during", "Listen", "err", err)
 	}
 	g.Add(func() error {
+		registar.Register()
 		logger.Log("transport", "HTTP", "addr", *httpAddr)
 		return http1.Serve(httpListener, httpHandler)
 	}, func(error) {
+		registar.Deregister()
 		httpListener.Close()
 	})
 
@@ -113,6 +88,7 @@ func getServiceMiddleware(logger log.Logger) (mw []service.Middleware) {
 }
 func getEndpointMiddleware(logger log.Logger) (mw map[string][]endpoint1.Middleware) {
 	mw = map[string][]endpoint1.Middleware{}
+
 	duration := prometheus.NewSummaryFrom(prometheus1.SummaryOpts{
 		Help:      "Request duration in seconds.",
 		Name:      "request_duration_seconds",
