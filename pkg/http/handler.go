@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -63,15 +64,18 @@ func encodeDeleteUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 
 // makeGetUserOrganizationByIdHandler creates the handler logic
 func makeGetUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("GET").Path("/api/v1/organization/{organizationId}/").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetUserOrganizationByIdEndpoint, decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
+	m.Methods("GET").Path("/api/v1/organization/{organizationId}").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetUserOrganizationByIdEndpoint, decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
 }
 
 // decodeGetUserOrganizationByIdRequest is a transport/http.DecodeRequestFunc that decodes a
 // JSON-encoded request from the HTTP request body.
 func decodeGetUserOrganizationByIdRequest(_ context.Context, r *http1.Request) (interface{}, error) {
 	req := endpoint.GetUserOrganizationByIdRequest{}
-	err := json.NewDecoder(r.Body).Decode(&req)
-	return req, err
+	params := mux.Vars(r)
+	organizationId := params["organizationId"]
+	fmt.Print(organizationId)
+	req.OrganizationId = organizationId
+	return req, nil
 }
 
 // encodeGetUserOrganizationByIdResponse is a transport/http.EncodeResponseFunc that encodes

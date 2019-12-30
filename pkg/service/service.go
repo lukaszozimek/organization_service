@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"github.com/lukaszozimek/organization_service/pkg/model"
+	"strconv"
 )
 
 // OrganizationService describes the service.
@@ -25,14 +26,15 @@ func (b *basicOrganizationService) CreateUserOrganizationById(ctx context.Contex
 func (b *basicOrganizationService) DeleteUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	db := model.GetDB()
 	var organization model.Organization
-	db.Where("id = ?", organizationId).Find(&organization)
+	db.Where("ID = ?", organizationId).Find(&organization)
 	db.Delete(organization)
 	return organization, err
 }
 func (b *basicOrganizationService) GetUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	db := model.GetDB()
+	i, err := strconv.ParseInt(organizationId, 10, 64)
 	var organization model.Organization
-	db.Where("id = ?", organizationId).Find(&organization)
+	db.First(&organization, i)
 	return res, err
 }
 func (b *basicOrganizationService) GetUserOrganizations(ctx context.Context) (organization []model.Organization, err error) {
