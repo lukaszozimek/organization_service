@@ -46,7 +46,10 @@ func makeDeleteUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.End
 // JSON-encoded request from the HTTP request body.
 func decodeDeleteUserOrganizationByIdRequest(_ context.Context, r *http1.Request) (interface{}, error) {
 	req := endpoint.DeleteUserOrganizationByIdRequest{}
-	err := json.NewDecoder(r.Body).Decode(&req)
+	params := mux.Vars(r)
+	organizationId := params["organizationId"]
+	fmt.Print(organizationId)
+	req.OrganizationId = organizationId
 	return req, err
 }
 
