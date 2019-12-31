@@ -50,7 +50,7 @@ func decodeDeleteUserOrganizationByIdRequest(_ context.Context, r *http1.Request
 	organizationId := params["organizationId"]
 	fmt.Print(organizationId)
 	req.OrganizationId = organizationId
-	return req, err
+	return req, nil
 }
 
 // encodeDeleteUserOrganizationByIdResponse is a transport/http.EncodeResponseFunc that encodes
