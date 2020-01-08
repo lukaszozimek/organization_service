@@ -6,6 +6,8 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics"
+	"gopkg.in/oauth2.v3/server"
+	"net/http"
 	"time"
 )
 
@@ -32,6 +34,19 @@ func LoggingMiddleware(logger log.Logger) endpoint.Middleware {
 			defer func(begin time.Time) {
 				logger.Log("transport_error", err, "took", time.Since(begin))
 			}(time.Now())
+			return next(ctx, request)
+		}
+	}
+}
+func AuthMiddleware(srv *server.Server) endpoint.Middleware {
+	return func(next endpoint.Endpoint) endpoint.Endpoint {
+		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			r := request.(*http.Request)
+			_, err = srv.ValidationBearerToken(r)
+			if err != nil {
+				return
+			}
+
 			return next(ctx, request)
 		}
 	}

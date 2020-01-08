@@ -12,6 +12,7 @@ import (
 	"github.com/lukaszozimek/organization_service/pkg/service"
 	"github.com/oklog/oklog/pkg/group"
 	opentracinggo "github.com/opentracing/opentracing-go"
+	"gopkg.in/oauth2.v3/server"
 )
 
 func createService(endpoints endpoint.Endpoints) (g *group.Group) {
@@ -30,11 +31,11 @@ func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[stri
 	}
 	return options
 }
-func addDefaultEndpointMiddleware(logger log.Logger, duration *prometheus.Summary, mw map[string][]endpoint1.Middleware) {
-	mw["CreateUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "CreateUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "CreateUserOrganizationById"))}
+func addDefaultEndpointMiddleware(logger log.Logger, duration *prometheus.Summary, srv *server.Server, mw map[string][]endpoint1.Middleware) {
+	mw["CreateUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "CreateUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "CreateUserOrganizationById")), endpoint.AuthMiddleware(srv)}
 	mw["DeleteUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "DeleteUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "DeleteUserOrganizationById"))}
-	mw["GetUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "GetUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "GetUserOrganizationById"))}
-	mw["GetUserOrganizations"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "GetUserOrganizations")), endpoint.InstrumentingMiddleware(duration.With("method", "GetUserOrganizations"))}
+	mw["GetUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "GetUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "GetUserOrganizationById")), endpoint.AuthMiddleware(srv)}
+	mw["GetUserOrganizations"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "GetUserOrganizations")), endpoint.InstrumentingMiddleware(duration.With("method", "GetUserOrganizations")), endpoint.AuthMiddleware(srv)}
 	mw["UpdateUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "UpdateUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "UpdateUserOrganizationById"))}
 	mw["Health"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "Health")), endpoint.InstrumentingMiddleware(duration.With("method", "Health"))}
 

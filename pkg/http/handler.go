@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
+
 	http1 "net/http"
 )
 
@@ -100,9 +101,9 @@ func makeGetUserOrganizationsHandler(m *mux.Router, endpoints endpoint.Endpoints
 
 // decodeGetUserOrganizationsRequest is a transport/http.DecodeRequestFunc that decodes a
 // JSON-encoded request from the HTTP request body.
-func decodeGetUserOrganizationsRequest(_ context.Context, r *http1.Request) (interface{}, error) {
-	req := endpoint.GetUserOrganizationsRequest{}
-	return req, nil
+func decodeGetUserOrganizationsRequest(ctx context.Context, r *http1.Request) (interface{}, error) {
+	println(ctx)
+	return r, nil
 }
 
 // encodeGetUserOrganizationsResponse is a transport/http.EncodeResponseFunc that encodes

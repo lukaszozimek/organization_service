@@ -18,6 +18,10 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"gopkg.in/oauth2.v3/manage"
+	"gopkg.in/oauth2.v3/server"
+	"gopkg.in/oauth2.v3/store"
 )
 
 var tracer opentracinggo.Tracer
@@ -88,6 +92,21 @@ func getServiceMiddleware(logger log.Logger) (mw []service.Middleware) {
 }
 func getEndpointMiddleware(logger log.Logger) (mw map[string][]endpoint1.Middleware) {
 	mw = map[string][]endpoint1.Middleware{}
+	manager := manage.NewDefaultManager()
+	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
+
+	// token memory store
+	manager.MustTokenStorage(store.NewMemoryTokenStore())
+
+	// client memory store
+	clientStore := store.NewClientStore()
+
+	manager.MapClientStorage(clientStore)
+
+	srv := server.NewDefaultServer(manager)
+	srv.SetAllowGetAccessRequest(true)
+	srv.SetClientInfoHandler(server.ClientFormHandler)
+	manager.SetRefreshTokenCfg(manage.DefaultRefreshTokenCfg)
 
 	duration := prometheus.NewSummaryFrom(prometheus1.SummaryOpts{
 		Help:      "Request duration in seconds.",
@@ -95,7 +114,7 @@ func getEndpointMiddleware(logger log.Logger) (mw map[string][]endpoint1.Middlew
 		Namespace: "example",
 		Subsystem: "organization_service",
 	}, []string{"method", "success"})
-	addDefaultEndpointMiddleware(logger, duration, mw)
+	addDefaultEndpointMiddleware(logger, duration, srv, mw)
 	// Add you endpoint middleware here
 
 	return
