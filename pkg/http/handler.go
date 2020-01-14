@@ -9,7 +9,6 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
-
 	http1 "net/http"
 )
 
