@@ -6,6 +6,7 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics/prometheus"
 	"github.com/go-kit/kit/tracing/opentracing"
+	"github.com/go-kit/kit/transport/grpc"
 	"github.com/go-kit/kit/transport/http"
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
 	http1 "github.com/lukaszozimek/organization_service/pkg/http"
@@ -18,6 +19,7 @@ import (
 func createService(endpoints endpoint.Endpoints) (g *group.Group) {
 	g = &group.Group{}
 	initHttpHandler(endpoints, g)
+	initGRPCHandler(endpoints, g)
 	return g
 }
 func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[string][]http.ServerOption {

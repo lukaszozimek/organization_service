@@ -7,7 +7,10 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics/prometheus"
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
-	grpc "github.com/lukaszozimek/organization_service/pkg/grpc"
+	"github.com/lukaszozimek/organization_service/pkg/grpc"
+	"github.com/lukaszozimek/organization_service/pkg/grpc/pb"
+	grpc1 "google.golang.org/grpc"
+
 	"github.com/lukaszozimek/organization_service/pkg/http"
 	"github.com/lukaszozimek/organization_service/pkg/service"
 	"github.com/oklog/oklog/pkg/group"

@@ -144,7 +144,7 @@ func encodeUpdateUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 
 // makeHealthHandler creates the handler logic
 func makeHealthHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("GET").Path("/api/v1/organization/health").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.Health, decodeHealthRequest, encodeHealthResponse, options...)))
+	m.Methods("GET").Path("/api/v1/organization/health").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.HealthEndpoint, decodeHealthRequest, encodeHealthResponse, options...)))
 }
 
 // encodeResetFinishResponse is a transport/http.EncodeResponseFunc that encodes

@@ -161,6 +161,9 @@ func MakeHealthEndpoint(s service.OrganizationService) endpoint.Endpoint {
 	}
 }
 
+// HealthRequest collects the request parameters for the Health method.
+type HealthRequest struct{}
+
 // ResetFinishResponse collects the response parameters for the ResetFinish method.
 type HealthResponse struct {
 	Rs  string `json:"rs"`
@@ -215,4 +218,14 @@ func (e Endpoints) UpdateUserOrganizationById(ctx context.Context, organization 
 		return
 	}
 	return response.(UpdateUserOrganizationByIdResponse).Organization, response.(UpdateUserOrganizationByIdResponse).Err
+}
+
+// Health implements Service. Primarily useful in a client.
+func (e Endpoints) Health(ctx context.Context) (rs string, err error) {
+	request := HealthRequest{}
+	response, err := e.HealthEndpoint(ctx, request)
+	if err != nil {
+		return
+	}
+	return response.(HealthResponse).Rs, response.(HealthResponse).Err
 }
