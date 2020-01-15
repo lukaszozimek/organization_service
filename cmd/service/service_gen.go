@@ -31,6 +31,17 @@ func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[stri
 	}
 	return options
 }
+func defaultGRPCOptions(logger log.Logger, tracer opentracinggo.Tracer) map[string][]grpc.ServerOption {
+	options := map[string][]grpc.ServerOption{
+		"CreateUserOrganizationById": {grpc.ServerErrorLogger(logger), grpc.ServerBefore(opentracing.GRPCToContext(tracer, "CreateUserOrganizationById", logger))},
+		"DeleteUserOrganizationById": {grpc.ServerErrorLogger(logger), grpc.ServerBefore(opentracing.GRPCToContext(tracer, "DeleteUserOrganizationById", logger))},
+		"GetUserOrganizationById":    {grpc.ServerErrorLogger(logger), grpc.ServerBefore(opentracing.GRPCToContext(tracer, "GetUserOrganizationById", logger))},
+		"GetUserOrganizations":       {grpc.ServerErrorLogger(logger), grpc.ServerBefore(opentracing.GRPCToContext(tracer, "GetUserOrganizations", logger))},
+		"Health":                     {grpc.ServerErrorLogger(logger), grpc.ServerBefore(opentracing.GRPCToContext(tracer, "Health", logger))},
+		"UpdateUserOrganizationById": {grpc.ServerErrorLogger(logger), grpc.ServerBefore(opentracing.GRPCToContext(tracer, "UpdateUserOrganizationById", logger))},
+	}
+	return options
+}
 func addDefaultEndpointMiddleware(logger log.Logger, duration *prometheus.Summary, srv *server.Server, mw map[string][]endpoint1.Middleware) {
 	mw["CreateUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "CreateUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "CreateUserOrganizationById")), endpoint.AuthMiddleware(srv)}
 	mw["DeleteUserOrganizationById"] = []endpoint1.Middleware{endpoint.LoggingMiddleware(log.With(logger, "method", "DeleteUserOrganizationById")), endpoint.InstrumentingMiddleware(duration.With("method", "DeleteUserOrganizationById"))}

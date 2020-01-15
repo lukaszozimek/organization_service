@@ -7,6 +7,7 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics/prometheus"
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
+	grpc "github.com/lukaszozimek/organization_service/pkg/grpc"
 	"github.com/lukaszozimek/organization_service/pkg/http"
 	"github.com/lukaszozimek/organization_service/pkg/service"
 	"github.com/oklog/oklog/pkg/group"
@@ -83,6 +84,25 @@ func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 	})
 
 }
+func initGRPCHandler(endpoints endpoint.Endpoints, g *group.Group) {
+	options := defaultGRPCOptions(logger, tracer)
+
+	grpcServer := grpc.NewGRPCServer(endpoints, options)
+	grpcListener, err := net.Listen("tcp", *grpcAddr)
+	if err != nil {
+		logger.Log("transport", "gRPC", "during", "Listen", "err", err)
+	}
+	g.Add(func() error {
+		logger.Log("transport", "gRPC", "addr", *grpcAddr)
+		baseServer := grpc1.NewServer()
+		pb.RegisterOrganizationServer(baseServer, grpcServer)
+		return baseServer.Serve(grpcListener)
+	}, func(error) {
+		grpcListener.Close()
+	})
+
+}
+
 func getServiceMiddleware(logger log.Logger) (mw []service.Middleware) {
 	mw = []service.Middleware{}
 	mw = addDefaultServiceMiddleware(logger, mw)

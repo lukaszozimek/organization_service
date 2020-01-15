@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package pb;
+
+//The Organization service definition.
+service Organization {
+    rpc CreateUserOrganizationById (CreateUserOrganizationByIdRequest) returns (CreateUserOrganizationByIdReply);
+    rpc DeleteUserOrganizationById (DeleteUserOrganizationByIdRequest) returns (DeleteUserOrganizationByIdReply);
+    rpc GetUserOrganizationById (GetUserOrganizationByIdRequest) returns (GetUserOrganizationByIdReply);
+    rpc GetUserOrganizations (GetUserOrganizationsRequest) returns (GetUserOrganizationsReply);
+    rpc UpdateUserOrganizationById (UpdateUserOrganizationByIdRequest) returns (UpdateUserOrganizationByIdReply);
+    rpc Health (HealthRequest) returns (HealthReply);
+}
+
+message CreateUserOrganizationByIdRequest {
+}
+
+message CreateUserOrganizationByIdReply {
+}
+
+message DeleteUserOrganizationByIdRequest {
+}
+
+message DeleteUserOrganizationByIdReply {
+}
+
+message GetUserOrganizationByIdRequest {
+}
+
+message GetUserOrganizationByIdReply {
+}
+
+message GetUserOrganizationsRequest {
+}
+
+message GetUserOrganizationsReply {
+}
+
+message UpdateUserOrganizationByIdRequest {
+}
+
+message UpdateUserOrganizationByIdReply {
+}
+
+message HealthRequest {
+}
+
+message HealthReply {
+}
+
