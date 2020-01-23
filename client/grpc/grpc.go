@@ -1,14 +1,13 @@
 package grpc
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
+	"github.com/go-kit/kit/endpoint"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
+	endpoint1 "github.com/lukaszozimek/organization_service/pkg/endpoint"
 	grpcHanlder "github.com/lukaszozimek/organization_service/pkg/grpc"
+	"github.com/lukaszozimek/organization_service/pkg/grpc/pb"
+	"github.com/lukaszozimek/organization_service/pkg/service"
 	"google.golang.org/grpc"
-	"io/ioutil"
-	"net/url"
 )
 
 // New returns an AddService backed by an HTTP server living at the remote
@@ -22,7 +21,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 			conn, "Lorem", "Lorem",
 			grpcHanlder.EncodeCreateUserOrganizationByIdRequest,
 			grpcHanlder.DecodeCreateUserOrganizationByIdResponse,
-			pb.LoremResponse{},
+			pb.CreateUserOrganizationByIdReply{},
 		).Endpoint()
 	}
 
@@ -30,9 +29,9 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		deleteUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Lorem", "Lorem",
-			grpcHanlder.EncodeCreateUserOrganizationByIdResponse,
-			grpcHanlder.DecodeCreateUserOrganizationByIdResponse,
-			pb.LoremResponse{},
+			grpcHanlder.EncodeDeleteUserOrganizationByIdRequest,
+			grpcHanlder.DecodeDeleteUserOrganizationByIdResponse,
+			pb.DeleteUserOrganizationByIdReply{},
 		).Endpoint()
 	}
 
@@ -40,9 +39,9 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		getUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Lorem", "Lorem",
-			lorem_grpc.EncodeGRPCLoremRequest,
-			lorem_grpc.DecodeGRPCLoremResponse,
-			pb.LoremResponse{},
+			grpcHanlder.EncodeGetUserOrganizationByIdRequest,
+			grpcHanlder.DecodeGetUserOrganizationByIdResponse,
+			pb.GetUserOrganizationByIdReply{},
 		).Endpoint()
 	}
 
@@ -50,9 +49,9 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		getUserOrganizationsEndpoint = grpctransport.NewClient(
 			conn, "Lorem", "Lorem",
-			lorem_grpc.EncodeGRPCLoremRequest,
-			lorem_grpc.DecodeGRPCLoremResponse,
-			pb.LoremResponse{},
+			grpcHanlder.EncodeGetUserOrganizationsRequest,
+			grpcHanlder.DecodeGetUserOrganizationsResponse,
+			pb.GetUserOrganizationsReply{},
 		).Endpoint()
 	}
 
@@ -60,19 +59,9 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		updateUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Lorem", "Lorem",
-			lorem_grpc.EncodeGRPCLoremRequest,
-			lorem_grpc.DecodeGRPCLoremResponse,
-			pb.LoremResponse{},
-		).Endpoint()
-	}
-
-	var healthEndpoint endpoint.Endpoint
-	{
-		healthEndpoint = grpctransport.NewClient(
-			conn, "Lorem", "Lorem",
-			lorem_grpc.EncodeGRPCLoremRequest,
-			lorem_grpc.DecodeGRPCLoremResponse,
-			pb.LoremResponse{},
+			grpcHanlder.EncodeUpdateUserOrganizationByIdRequest,
+			grpcHanlder.DecodeUpdateUserOrganizationByIdResponse,
+			pb.UpdateUserOrganizationByIdReply{},
 		).Endpoint()
 	}
 
@@ -81,103 +70,6 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 		DeleteUserOrganizationByIdEndpoint: deleteUserOrganizationByIdEndpoint,
 		GetUserOrganizationByIdEndpoint:    getUserOrganizationByIdEndpoint,
 		GetUserOrganizationsEndpoint:       getUserOrganizationsEndpoint,
-		HealthEndpoint:                     healthEndpoint,
 		UpdateUserOrganizationByIdEndpoint: updateUserOrganizationByIdEndpoint,
 	}, nil
-}
-
-// EncodeHTTPGenericRequest is a transport/http.EncodeRequestFunc that
-// SON-encodes any request to the request body. Primarily useful in a client.
-func encodeHTTPGenericRequest(_ context.Context, r *http1.Request, request interface{}) error {
-	var buf bytes.Buffer
-
-	if err := json.NewEncoder(&buf).Encode(request); err != nil {
-		return err
-	}
-	r.Body = ioutil.NopCloser(&buf)
-	return nil
-}
-
-// decodeCreateUserOrganizationByIdResponse is a transport/http.DecodeResponseFunc that decodes
-// a JSON-encoded concat response from the HTTP response body. If the response
-// as a non-200 status code, we will interpret that as an error and attempt to
-//  decode the specific error message from the response body.
-func decodeCreateUserOrganizationByIdResponse(_ context.Context, r *http1.Response) (interface{}, error) {
-	if r.StatusCode != http1.StatusOK {
-		return nil, http2.ErrorDecoder(r)
-	}
-	var resp endpoint1.CreateUserOrganizationByIdResponse
-	err := json.NewDecoder(r.Body).Decode(&resp)
-	return resp, err
-}
-
-// decodeDeleteUserOrganizationByIdResponse is a transport/http.DecodeResponseFunc that decodes
-// a JSON-encoded concat response from the HTTP response body. If the response
-// as a non-200 status code, we will interpret that as an error and attempt to
-//  decode the specific error message from the response body.
-func decodeDeleteUserOrganizationByIdResponse(_ context.Context, r *http1.Response) (interface{}, error) {
-	if r.StatusCode != http1.StatusOK {
-		return nil, http2.ErrorDecoder(r)
-	}
-	var resp endpoint1.DeleteUserOrganizationByIdResponse
-	err := json.NewDecoder(r.Body).Decode(&resp)
-	return resp, err
-}
-
-// decodeGetUserOrganizationByIdResponse is a transport/http.DecodeResponseFunc that decodes
-// a JSON-encoded concat response from the HTTP response body. If the response
-// as a non-200 status code, we will interpret that as an error and attempt to
-//  decode the specific error message from the response body.
-func decodeGetUserOrganizationByIdResponse(_ context.Context, r *http1.Response) (interface{}, error) {
-	if r.StatusCode != http1.StatusOK {
-		return nil, http2.ErrorDecoder(r)
-	}
-	var resp endpoint1.GetUserOrganizationByIdResponse
-	err := json.NewDecoder(r.Body).Decode(&resp)
-	return resp, err
-}
-
-// decodeGetUserOrganizationsResponse is a transport/http.DecodeResponseFunc that decodes
-// a JSON-encoded concat response from the HTTP response body. If the response
-// as a non-200 status code, we will interpret that as an error and attempt to
-//  decode the specific error message from the response body.
-func decodeGetUserOrganizationsResponse(_ context.Context, r *http1.Response) (interface{}, error) {
-	if r.StatusCode != http1.StatusOK {
-		return nil, http2.ErrorDecoder(r)
-	}
-	var resp endpoint1.GetUserOrganizationsResponse
-	err := json.NewDecoder(r.Body).Decode(&resp)
-	return resp, err
-}
-
-// decodeUpdateUserOrganizationByIdResponse is a transport/http.DecodeResponseFunc that decodes
-// a JSON-encoded concat response from the HTTP response body. If the response
-// as a non-200 status code, we will interpret that as an error and attempt to
-//  decode the specific error message from the response body.
-func decodeUpdateUserOrganizationByIdResponse(_ context.Context, r *http1.Response) (interface{}, error) {
-	if r.StatusCode != http1.StatusOK {
-		return nil, http2.ErrorDecoder(r)
-	}
-	var resp endpoint1.UpdateUserOrganizationByIdResponse
-	err := json.NewDecoder(r.Body).Decode(&resp)
-	return resp, err
-}
-
-// decodeHealthResponse is a transport/http.DecodeResponseFunc that decodes
-// a JSON-encoded concat response from the HTTP response body. If the response
-// as a non-200 status code, we will interpret that as an error and attempt to
-//  decode the specific error message from the response body.
-func decodeHealthResponse(_ context.Context, r *http1.Response) (interface{}, error) {
-	if r.StatusCode != http1.StatusOK {
-		return nil, http2.ErrorDecoder(r)
-	}
-	var resp endpoint1.HealthResponse
-	err := json.NewDecoder(r.Body).Decode(&resp)
-	return resp, err
-}
-func copyURL(base *url.URL, path string) (next *url.URL) {
-	n := *base
-	n.Path = path
-	next = &n
-	return
 }
