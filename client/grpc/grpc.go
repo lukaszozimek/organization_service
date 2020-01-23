@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
-	"github.com/lukaszozimek/organization_service/pkg/grpc/handler"
+	grpcHanlder "github.com/lukaszozimek/organization_service/pkg/grpc"
 	"google.golang.org/grpc"
 	"io/ioutil"
 	"net/url"
@@ -20,8 +20,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		createUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Lorem", "Lorem",
-			handler.EncodeCreateUserOrganizationByIdRequest,
-			handler.DecodeCreateUserOrganizationByIdResponse,
+			grpcHanlder.EncodeCreateUserOrganizationByIdRequest,
+			grpcHanlder.DecodeCreateUserOrganizationByIdResponse,
 			pb.LoremResponse{},
 		).Endpoint()
 	}
@@ -30,8 +30,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		deleteUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Lorem", "Lorem",
-			handler.EncodeCreateUserOrganizationByIdResponse,
-			handler.DecodeCreateUserOrganizationByIdResponse,
+			grpcHanlder.EncodeCreateUserOrganizationByIdResponse,
+			grpcHanlder.DecodeCreateUserOrganizationByIdResponse,
 			pb.LoremResponse{},
 		).Endpoint()
 	}
