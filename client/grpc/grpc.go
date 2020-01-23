@@ -18,7 +18,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var createUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		createUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Lorem", "Lorem",
+			conn, "Organization", "CreateUserOrganizationById",
 			grpcHanlder.EncodeCreateUserOrganizationByIdRequest,
 			grpcHanlder.DecodeCreateUserOrganizationByIdResponse,
 			pb.CreateUserOrganizationByIdReply{},
@@ -28,7 +28,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var deleteUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		deleteUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Lorem", "Lorem",
+			conn, "Organization", "DeleteUserOrganizationById",
 			grpcHanlder.EncodeDeleteUserOrganizationByIdRequest,
 			grpcHanlder.DecodeDeleteUserOrganizationByIdResponse,
 			pb.DeleteUserOrganizationByIdReply{},
@@ -38,7 +38,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var getUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		getUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Lorem", "Lorem",
+			conn, "Organization", "GetUserOrganizationById",
 			grpcHanlder.EncodeGetUserOrganizationByIdRequest,
 			grpcHanlder.DecodeGetUserOrganizationByIdResponse,
 			pb.GetUserOrganizationByIdReply{},
@@ -48,7 +48,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var getUserOrganizationsEndpoint endpoint.Endpoint
 	{
 		getUserOrganizationsEndpoint = grpctransport.NewClient(
-			conn, "Lorem", "Lorem",
+			conn, "Organization", "GetUserOrganizations",
 			grpcHanlder.EncodeGetUserOrganizationsRequest,
 			grpcHanlder.DecodeGetUserOrganizationsResponse,
 			pb.GetUserOrganizationsReply{},
@@ -58,7 +58,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var updateUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		updateUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Lorem", "Lorem",
+			conn, "Organization", "UpdateUserOrganizationById",
 			grpcHanlder.EncodeUpdateUserOrganizationByIdRequest,
 			grpcHanlder.DecodeUpdateUserOrganizationByIdResponse,
 			pb.UpdateUserOrganizationByIdReply{},
