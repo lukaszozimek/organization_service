@@ -18,20 +18,16 @@ func makeCreateUserOrganizationByIdHandler(endpoints endpoint.Endpoints, options
 // gRPC request to a user-domain CreateUserOrganizationById request.
 // TODO implement the decoder
 func DecodeCreateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
-}
-func EncodeCreateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
+	//resp := r.(CreateUserOrganizationByIdRequest)
+	return &pb.CreateUserOrganizationByIdRequest{}, nil
 }
 
 // encodeCreateUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
 func EncodeCreateUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
-}
-func DecodeCreateUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
+	//resp := r.(CreateUserOrganizationByIdReply)
+	return &pb.CreateUserOrganizationByIdReply{}, nil
 }
 func (g *grpcServer) CreateUserOrganizationById(ctx context1.Context, req *pb.CreateUserOrganizationByIdRequest) (*pb.CreateUserOrganizationByIdReply, error) {
 	_, rep, err := g.createUserOrganizationById.ServeGRPC(ctx, req)
@@ -50,25 +46,18 @@ func makeDeleteUserOrganizationByIdHandler(endpoints endpoint.Endpoints, options
 // gRPC request to a user-domain DeleteUserOrganizationById request.
 // TODO implement the decoder
 func DecodeDeleteUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
-}
-
-// decodeDeleteUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
-// gRPC request to a user-domain DeleteUserOrganizationById request.
-// TODO implement the decoder
-func EncodeDeleteUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
+	//resp := r.(DeleteUserOrganizationByIdRequest)
+	return &pb.DeleteUserOrganizationByIdRequest{}, nil
 }
 
 // encodeDeleteUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
 func EncodeDeleteUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
+	//resp := r.(DeleteUserOrganizationByIdReply)
+	return &pb.DeleteUserOrganizationByIdReply{}, nil
 }
-func DecodeDeleteUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
-}
+
 func (g *grpcServer) DeleteUserOrganizationById(ctx context1.Context, req *pb.DeleteUserOrganizationByIdRequest) (*pb.DeleteUserOrganizationByIdReply, error) {
 	_, rep, err := g.deleteUserOrganizationById.ServeGRPC(ctx, req)
 	if err != nil {
@@ -89,13 +78,6 @@ func DecodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (int
 	return pb.GetUserOrganizationByIdRequest{}, nil
 }
 
-// decodeGetUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
-// gRPC request to a user-domain GetUserOrganizationById request.
-// TODO implement the decoder
-func EncodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return pb.GetUserOrganizationByIdReply{}, nil
-}
-
 // encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
@@ -103,12 +85,6 @@ func EncodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (in
 	return pb.GetUserOrganizationByIdReply{}, nil
 }
 
-// encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
-// a user-domain response to a gRPC reply.
-// TODO implement the encoder
-func DecodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return pb.GetUserOrganizationByIdReply{}, nil
-}
 func (g *grpcServer) GetUserOrganizationById(ctx context1.Context, req *pb.GetUserOrganizationByIdRequest) (*pb.GetUserOrganizationByIdReply, error) {
 	_, rep, err := g.getUserOrganizationById.ServeGRPC(ctx, req)
 	if err != nil {
@@ -129,13 +105,6 @@ func DecodeGetUserOrganizationsRequest(_ context.Context, r interface{}) (interf
 	return nil, errors.New("'Organization' Decoder is not impelemented")
 }
 
-// decodeGetUserOrganizationsResponse is a transport/grpc.DecodeRequestFunc that converts a
-// gRPC request to a user-domain GetUserOrganizations request.
-// TODO implement the decoder
-func EncodeGetUserOrganizationsRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
-}
-
 // encodeGetUserOrganizationsResponse is a transport/grpc.EncodeResponseFunc that converts
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
@@ -143,12 +112,6 @@ func EncodeGetUserOrganizationsResponse(_ context.Context, r interface{}) (inter
 	return nil, errors.New("'Organization' Encoder is not impelemented")
 }
 
-// encodeGetUserOrganizationsResponse is a transport/grpc.EncodeResponseFunc that converts
-// a user-domain response to a gRPC reply.
-// TODO implement the encoder
-func DecodeGetUserOrganizationsResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
-}
 func (g *grpcServer) GetUserOrganizations(ctx context1.Context, req *pb.GetUserOrganizationsRequest) (*pb.GetUserOrganizationsReply, error) {
 	_, rep, err := g.getUserOrganizations.ServeGRPC(ctx, req)
 	if err != nil {
@@ -169,13 +132,6 @@ func DecodeUpdateUserOrganizationByIdRequest(_ context.Context, r interface{}) (
 	return nil, errors.New("'Organization' Decoder is not impelemented")
 }
 
-// decodeUpdateUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
-// gRPC request to a user-domain UpdateUserOrganizationById request.
-// TODO implement the decoder
-func EncodeUpdateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
-}
-
 // encodeUpdateUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
@@ -183,12 +139,6 @@ func EncodeUpdateUserOrganizationByIdResponse(_ context.Context, r interface{}) 
 	return nil, errors.New("'Organization' Encoder is not impelemented")
 }
 
-// encodeUpdateUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
-// a user-domain response to a gRPC reply.
-// TODO implement the encoder
-func DecodeUpdateUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
-}
 func (g *grpcServer) UpdateUserOrganizationById(ctx context1.Context, req *pb.UpdateUserOrganizationByIdRequest) (*pb.UpdateUserOrganizationByIdReply, error) {
 	_, rep, err := g.updateUserOrganizationById.ServeGRPC(ctx, req)
 	if err != nil {

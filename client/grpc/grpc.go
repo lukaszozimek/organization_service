@@ -1,10 +1,10 @@
 package grpc
 
 import (
+	"context"
 	"github.com/go-kit/kit/endpoint"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
 	endpoint1 "github.com/lukaszozimek/organization_service/pkg/endpoint"
-	grpcHanlder "github.com/lukaszozimek/organization_service/pkg/grpc"
 	"github.com/lukaszozimek/organization_service/pkg/grpc/pb"
 	"github.com/lukaszozimek/organization_service/pkg/service"
 	"google.golang.org/grpc"
@@ -19,8 +19,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		createUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Organization", "CreateUserOrganizationById",
-			grpcHanlder.EncodeCreateUserOrganizationByIdRequest,
-			grpcHanlder.DecodeCreateUserOrganizationByIdResponse,
+			EncodeCreateUserOrganizationByIdRequest,
+			DecodeCreateUserOrganizationByIdResponse,
 			pb.CreateUserOrganizationByIdReply{},
 		).Endpoint()
 	}
@@ -29,8 +29,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		deleteUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Organization", "DeleteUserOrganizationById",
-			grpcHanlder.EncodeDeleteUserOrganizationByIdRequest,
-			grpcHanlder.DecodeDeleteUserOrganizationByIdResponse,
+			EncodeDeleteUserOrganizationByIdRequest,
+			DecodeDeleteUserOrganizationByIdResponse,
 			pb.DeleteUserOrganizationByIdReply{},
 		).Endpoint()
 	}
@@ -39,8 +39,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		getUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Organization", "GetUserOrganizationById",
-			grpcHanlder.EncodeGetUserOrganizationByIdRequest,
-			grpcHanlder.DecodeGetUserOrganizationByIdResponse,
+			EncodeGetUserOrganizationByIdRequest,
+			DecodeGetUserOrganizationByIdResponse,
 			pb.GetUserOrganizationByIdReply{},
 		).Endpoint()
 	}
@@ -49,8 +49,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		getUserOrganizationsEndpoint = grpctransport.NewClient(
 			conn, "Organization", "GetUserOrganizations",
-			grpcHanlder.EncodeGetUserOrganizationsRequest,
-			grpcHanlder.DecodeGetUserOrganizationsResponse,
+			EncodeGetUserOrganizationsRequest,
+			DecodeGetUserOrganizationsResponse,
 			pb.GetUserOrganizationsReply{},
 		).Endpoint()
 	}
@@ -59,8 +59,8 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	{
 		updateUserOrganizationByIdEndpoint = grpctransport.NewClient(
 			conn, "Organization", "UpdateUserOrganizationById",
-			grpcHanlder.EncodeUpdateUserOrganizationByIdRequest,
-			grpcHanlder.DecodeUpdateUserOrganizationByIdResponse,
+			EncodeUpdateUserOrganizationByIdRequest,
+			DecodeUpdateUserOrganizationByIdResponse,
 			pb.UpdateUserOrganizationByIdReply{},
 		).Endpoint()
 	}
@@ -72,4 +72,71 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 		GetUserOrganizationsEndpoint:       getUserOrganizationsEndpoint,
 		UpdateUserOrganizationByIdEndpoint: updateUserOrganizationByIdEndpoint,
 	}, nil
+}
+
+// decodeGetUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC request to a user-domain GetUserOrganizationById request.
+// TODO implement the decoder
+func EncodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(GetUserOrganizationByIdRequest)
+	return &pb.GetUserOrganizationByIdRequest{}, nil
+}
+
+// encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
+// a user-domain response to a gRPC reply.
+// TODO implement the encoder
+func DecodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(*pb.GetUserOrganizationByIdReply)
+	return GetUserOrganizationByIdReply{}, nil
+}
+
+// decodeDeleteUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC request to a user-domain DeleteUserOrganizationById request.
+// TODO implement the decoder
+func EncodeDeleteUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(DeleteUserOrganizationByIdRequest)
+	return &pb.DeleteUserOrganizationByIdRequest{}, nil
+}
+
+func DecodeDeleteUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(DeleteUserOrganizationByIdReply)
+	return &pb.DeleteUserOrganizationByIdReply{}, nil
+}
+func EncodeCreateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(CreateUserOrganizationByIdRequest)
+	return &pb.CreateUserOrganizationByIdRequest{}, nil
+}
+func DecodeCreateUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(CreateUserOrganizationByIdReply)
+	return &pb.CreateUserOrganizationByIdReply{}, nil
+}
+
+// decodeUpdateUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC request to a user-domain UpdateUserOrganizationById request.
+// TODO implement the decoder
+func EncodeUpdateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(UpdateUserOrganizationByIdRequest)
+	return &pb.UpdateUserOrganizationByIdRequest{}, nil
+}
+
+// encodeUpdateUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
+// a user-domain response to a gRPC reply.
+// TODO implement the encoder
+func DecodeUpdateUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(UpdateUserOrganizationByIdReply)
+	return &pb.UpdateUserOrganizationByIdReply{}, nil
+} // decodeGetUserOrganizationsResponse is a transport/grpc.DecodeRequestFunc that converts a
+// gRPC request to a user-domain GetUserOrganizations request.
+// TODO implement the decoder
+func EncodeGetUserOrganizationsRequest(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(GetUserOrganizationsRequest)
+	return &pb.GetUserOrganizationsRequest{}, nil
+}
+
+// encodeGetUserOrganizationsResponse is a transport/grpc.EncodeResponseFunc that converts
+// a user-domain response to a gRPC reply.
+// TODO implement the encoder
+func DecodeGetUserOrganizationsResponse(_ context.Context, r interface{}) (interface{}, error) {
+	//resp := r.(GetUserOrganizationsReply)
+	return &pb.GetUserOrganizationsReply{}, nil
 }

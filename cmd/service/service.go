@@ -34,13 +34,13 @@ var logger log.Logger
 // Define our flags. Your service probably won't need to bind listeners for
 // all* supported transports, but we do it here for demonstration purposes.
 var fs = flag.NewFlagSet("organization_service", flag.ExitOnError)
-var debugAddr = fs.String("debug.addr", ":8080", "Debug and metrics listen address")
-var httpAddr = fs.String("http-addr", ":8081", "HTTP listen address")
+var debugAddr = fs.String("debug.addr", ":8088", "Debug and metrics listen address")
+var httpAddr = fs.String("http-addr", ":8085", "HTTP listen address")
 var consulAddr = flag.String("consul.addr", "localhost", "consul address")
 var consulPort = flag.String("consul.port", "8500", "consul port")
 
-var grpcAddr = fs.String("grpc-addr", ":8082", "gRPC listen address")
-var thriftAddr = fs.String("thrift-addr", ":8083", "Thrift listen address")
+var grpcAddr = fs.String("grpc-addr", ":8086", "gRPC listen address")
+var thriftAddr = fs.String("thrift-addr", ":8087", "Thrift listen address")
 var thriftProtocol = fs.String("thrift-protocol", "binary", "binary, compact, json, simplejson")
 var thriftBuffer = fs.Int("thrift-buffer", 0, "0 for unbuffered")
 var thriftFramed = fs.Bool("thrift-framed", false, "true to enable framing")
@@ -70,7 +70,7 @@ func Run() {
 func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 	options := defaultHttpOptions(logger, tracer)
 	// Add your http options here
-	registar := Register(*consulAddr, *consulPort, "organization.service.consul", "8081")
+	//	registar := Register(*consulAddr, *consulPort, "organization.service.consul", "8081")
 
 	httpHandler := http.NewHTTPHandler(endpoints, options)
 	httpListener, err := net.Listen("tcp", *httpAddr)
@@ -78,11 +78,11 @@ func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 		logger.Log("transport", "HTTP", "during", "Listen", "err", err)
 	}
 	g.Add(func() error {
-		registar.Register()
+		//	registar.Register()
 		logger.Log("transport", "HTTP", "addr", *httpAddr)
 		return http1.Serve(httpListener, httpHandler)
 	}, func(error) {
-		registar.Deregister()
+		//		registar.Deregister()
 		httpListener.Close()
 	})
 
