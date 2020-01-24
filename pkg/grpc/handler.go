@@ -86,14 +86,14 @@ func makeGetUserOrganizationByIdHandler(endpoints endpoint.Endpoints, options []
 // gRPC request to a user-domain GetUserOrganizationById request.
 // TODO implement the decoder
 func DecodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
+	return pb.GetUserOrganizationByIdRequest{}, nil
 }
 
 // decodeGetUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
 // gRPC request to a user-domain GetUserOrganizationById request.
 // TODO implement the decoder
 func EncodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Decoder is not impelemented")
+	return pb.GetUserOrganizationByIdReply{}, nil
 }
 
 // encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
