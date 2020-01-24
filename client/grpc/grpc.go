@@ -87,7 +87,7 @@ func EncodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (int
 // TODO implement the encoder
 func DecodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(*pb.GetUserOrganizationByIdReply)
-	return GetUserOrganizationByIdReply{}, nil
+	return &pb.GetUserOrganizationByIdReply{}, nil
 }
 
 // decodeDeleteUserOrganizationByIdResponse is a transport/grpc.DecodeRequestFunc that converts a
