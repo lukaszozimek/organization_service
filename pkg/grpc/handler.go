@@ -100,14 +100,14 @@ func EncodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (int
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
 func EncodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
+	return pb.GetUserOrganizationByIdReply{}, nil
 }
 
 // encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
 func DecodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return nil, errors.New("'Organization' Encoder is not impelemented")
+	return pb.GetUserOrganizationByIdReply{}, nil
 }
 func (g *grpcServer) GetUserOrganizationById(ctx context1.Context, req *pb.GetUserOrganizationByIdRequest) (*pb.GetUserOrganizationByIdReply, error) {
 	_, rep, err := g.getUserOrganizationById.ServeGRPC(ctx, req)
