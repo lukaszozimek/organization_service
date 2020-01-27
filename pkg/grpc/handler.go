@@ -82,7 +82,7 @@ func DecodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (int
 // a user-domain response to a gRPC reply.
 // TODO implement the encoder
 func EncodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
-	return pb.GetUserOrganizationByIdReply{}, nil
+	return *pb.GetUserOrganizationByIdReply{}, nil
 }
 
 func (g *grpcServer) GetUserOrganizationById(ctx context1.Context, req *pb.GetUserOrganizationByIdRequest) (*pb.GetUserOrganizationByIdReply, error) {
