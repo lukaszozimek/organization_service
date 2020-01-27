@@ -2,8 +2,8 @@ package endpoint
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-kit/kit/endpoint"
+	"github.com/lukaszozimek/organization_service/pkg/grpc/pb"
 	"github.com/lukaszozimek/organization_service/pkg/model"
 	"github.com/lukaszozimek/organization_service/pkg/service"
 	"reflect"
@@ -199,8 +199,11 @@ func (e Endpoints) GetUserOrganizationById(ctx context.Context, organizationId s
 	if err != nil {
 		return
 	}
-	fmt.Println(reflect.TypeOf(response))
+	if reflect.TypeOf(response).Elem() == reflect.TypeOf(new(pb.CreateUserOrganizationByIdReply)).Elem() {
+		return model.Organization{}, nil
+	}
 	return response.(GetUserOrganizationByIdResponse).Organization, response.(GetUserOrganizationByIdResponse).Err
+
 }
 
 // GetUserOrganizations implements Service. Primarily useful in a client.
