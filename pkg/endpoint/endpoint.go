@@ -2,9 +2,11 @@ package endpoint
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/lukaszozimek/organization_service/pkg/model"
 	"github.com/lukaszozimek/organization_service/pkg/service"
+	"reflect"
 )
 
 // CreateUserOrganizationByIdRequest collects the request parameters for the CreateUserOrganizationById method.
@@ -197,6 +199,7 @@ func (e Endpoints) GetUserOrganizationById(ctx context.Context, organizationId s
 	if err != nil {
 		return
 	}
+	fmt.Println(reflect.TypeOf(response))
 	return response.(GetUserOrganizationByIdResponse).Organization, response.(GetUserOrganizationByIdResponse).Err
 }
 
