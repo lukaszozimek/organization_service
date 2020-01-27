@@ -199,7 +199,7 @@ func (e Endpoints) GetUserOrganizationById(ctx context.Context, organizationId s
 	if err != nil {
 		return
 	}
-	if reflect.TypeOf(response).Elem() == reflect.TypeOf(new(pb.CreateUserOrganizationByIdReply)).Elem() {
+	if reflect.TypeOf(response).Elem() == reflect.TypeOf(new(pb.GetUserOrganizationByIdReply)).Elem() {
 		return model.Organization{}, nil
 	}
 	return response.(GetUserOrganizationByIdResponse).Organization, response.(GetUserOrganizationByIdResponse).Err
