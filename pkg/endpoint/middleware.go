@@ -7,7 +7,6 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics"
 	"gopkg.in/oauth2.v3/server"
-	"net/http"
 	"time"
 )
 
