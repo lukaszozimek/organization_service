@@ -18,7 +18,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var createUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		createUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Organization", "CreateUserOrganizationById",
+			conn, "pb.Organization", "CreateUserOrganizationById",
 			EncodeCreateUserOrganizationByIdRequest,
 			DecodeCreateUserOrganizationByIdResponse,
 			pb.CreateUserOrganizationByIdReply{},
@@ -28,7 +28,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var deleteUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		deleteUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Organization", "DeleteUserOrganizationById",
+			conn, "pb.Organization", "DeleteUserOrganizationById",
 			EncodeDeleteUserOrganizationByIdRequest,
 			DecodeDeleteUserOrganizationByIdResponse,
 			pb.DeleteUserOrganizationByIdReply{},
@@ -38,7 +38,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var getUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		getUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Organization", "GetUserOrganizationById",
+			conn, "pb.Organization", "GetUserOrganizationById",
 			EncodeGetUserOrganizationByIdRequest,
 			DecodeGetUserOrganizationByIdResponse,
 			pb.GetUserOrganizationByIdReply{},
@@ -48,7 +48,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var getUserOrganizationsEndpoint endpoint.Endpoint
 	{
 		getUserOrganizationsEndpoint = grpctransport.NewClient(
-			conn, "Organization", "GetUserOrganizations",
+			conn, "pb.Organization", "GetUserOrganizations",
 			EncodeGetUserOrganizationsRequest,
 			DecodeGetUserOrganizationsResponse,
 			pb.GetUserOrganizationsReply{},
@@ -58,7 +58,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 	var updateUserOrganizationByIdEndpoint endpoint.Endpoint
 	{
 		updateUserOrganizationByIdEndpoint = grpctransport.NewClient(
-			conn, "Organization", "UpdateUserOrganizationById",
+			conn, "pb.Organization", "UpdateUserOrganizationById",
 			EncodeUpdateUserOrganizationByIdRequest,
 			DecodeUpdateUserOrganizationByIdResponse,
 			pb.UpdateUserOrganizationByIdReply{},
