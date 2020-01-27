@@ -75,7 +75,7 @@ func makeGetUserOrganizationByIdHandler(endpoints endpoint.Endpoints, options []
 // gRPC request to a user-domain GetUserOrganizationById request.
 // TODO implement the decoder
 func DecodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
-	return pb.GetUserOrganizationByIdRequest{}, nil
+	return endpoint.GetUserOrganizationByIdRequest{}, nil
 }
 
 // encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
