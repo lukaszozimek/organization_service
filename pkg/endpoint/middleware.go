@@ -41,11 +41,8 @@ func LoggingMiddleware(logger log.Logger) endpoint.Middleware {
 func AuthMiddleware(srv *server.Server) endpoint.Middleware {
 	return func(next endpoint.Endpoint) endpoint.Endpoint {
 		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-			r := request.(*http.Request)
-			_, err = srv.ValidationBearerToken(r)
-			if err != nil {
-				return
-			}
+			//r := request.(*http.Request)
+			//_, err = srv.ValidationBearerToken(r)
 
 			return next(ctx, request)
 		}
