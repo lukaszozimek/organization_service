@@ -79,7 +79,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 // TODO implement the decoder
 func EncodeGetUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(GetUserOrganizationByIdRequest)
-	return &pb.GetUserOrganizationByIdRequest{}, nil
+	return &endpoint1.GetUserOrganizationByIdRequest{}, nil
 }
 
 // encodeGetUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
@@ -95,7 +95,7 @@ func DecodeGetUserOrganizationByIdResponse(_ context.Context, r interface{}) (in
 // TODO implement the decoder
 func EncodeDeleteUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(DeleteUserOrganizationByIdRequest)
-	return &pb.DeleteUserOrganizationByIdRequest{}, nil
+	return &endpoint1.DeleteUserOrganizationByIdRequest{}, nil
 }
 
 func DecodeDeleteUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
@@ -104,7 +104,7 @@ func DecodeDeleteUserOrganizationByIdResponse(_ context.Context, r interface{}) 
 }
 func EncodeCreateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(CreateUserOrganizationByIdRequest)
-	return &pb.CreateUserOrganizationByIdRequest{}, nil
+	return &endpoint1.CreateUserOrganizationByIdRequest{}, nil
 }
 func DecodeCreateUserOrganizationByIdResponse(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(CreateUserOrganizationByIdReply)
@@ -116,7 +116,7 @@ func DecodeCreateUserOrganizationByIdResponse(_ context.Context, r interface{}) 
 // TODO implement the decoder
 func EncodeUpdateUserOrganizationByIdRequest(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(UpdateUserOrganizationByIdRequest)
-	return &pb.UpdateUserOrganizationByIdRequest{}, nil
+	return &endpoint1.UpdateUserOrganizationByIdRequest{}, nil
 }
 
 // encodeUpdateUserOrganizationByIdResponse is a transport/grpc.EncodeResponseFunc that converts
@@ -130,7 +130,7 @@ func DecodeUpdateUserOrganizationByIdResponse(_ context.Context, r interface{}) 
 // TODO implement the decoder
 func EncodeGetUserOrganizationsRequest(_ context.Context, r interface{}) (interface{}, error) {
 	//resp := r.(GetUserOrganizationsRequest)
-	return &pb.GetUserOrganizationsRequest{}, nil
+	return &endpoint1.GetUserOrganizationsRequest{}, nil
 }
 
 // encodeGetUserOrganizationsResponse is a transport/grpc.EncodeResponseFunc that converts
