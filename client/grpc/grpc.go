@@ -41,7 +41,7 @@ func New(conn *grpc.ClientConn) (service.OrganizationService, error) {
 			conn, "pb.Organization", "GetUserOrganizationById",
 			EncodeGetUserOrganizationByIdRequest,
 			DecodeGetUserOrganizationByIdResponse,
-			pb.GetUserOrganizationByIdReply{},
+			*pb.GetUserOrganizationByIdReply{},
 		).Endpoint()
 	}
 
