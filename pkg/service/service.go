@@ -20,15 +20,44 @@ type basicOrganizationService struct{}
 
 func (b *basicOrganizationService) CreateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
 	db := model.GetDB()
-	db.Create(&organization)
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return model.Organization{}, err
+	}
+
+	if err := tx.Create(&organization).Error; err != nil {
+		tx.Rollback()
+		return model.Organization{}, err
+	}
+
+	tx.Commit()
 	return organization, err
 }
 func (b *basicOrganizationService) DeleteUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	db := model.GetDB()
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return model.Organization{}, err
+	}
 	var organization model.Organization
-	db.Where("ID = ?", organizationId).Find(&organization)
-	db.Delete(organization)
-	return organization, err
+	tx.Where("ID = ?", organizationId).Find(&organization)
+	if err := tx.Delete(organization).Error; err != nil {
+		tx.Rollback()
+		return model.Organization{}, err
+	}
+	tx.Commit()
+	return model.Organization{}, err
 }
 func (b *basicOrganizationService) GetUserOrganizationById(ctx context.Context, organizationId string) (res model.Organization, err error) {
 	db := model.GetDB()
@@ -45,7 +74,20 @@ func (b *basicOrganizationService) GetUserOrganizations(ctx context.Context) (or
 }
 func (b *basicOrganizationService) UpdateUserOrganizationById(ctx context.Context, organization model.Organization) (res model.Organization, err error) {
 	db := model.GetDB()
-	db.Update(&organization)
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	if err := tx.Error; err != nil {
+		return model.Organization{}, err
+	}
+	if err := tx.Update(&organization).Error; err != nil {
+		tx.Rollback()
+		return model.Organization{}, err
+	}
+	tx.Commit()
 	return organization, err
 }
 func (b *basicOrganizationService) Health(ctx context.Context) (rs string, err error) {
