@@ -2,6 +2,7 @@
 package service
 
 import (
+	gokitjwt "github.com/go-kit/kit/auth/jwt"
 	endpoint1 "github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/metrics/prometheus"
@@ -24,12 +25,12 @@ func createService(endpoints endpoint.Endpoints) (g *group.Group) {
 }
 func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[string][]http.ServerOption {
 	options := map[string][]http.ServerOption{
-		"CreateUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "CreateUserOrganizationById", logger))},
-		"DeleteUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "DeleteUserOrganizationById", logger))},
-		"GetUserOrganizationById":    {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "GetUserOrganizationById", logger))},
-		"GetUserOrganizations":       {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "GetUserOrganizations", logger))},
-		"UpdateUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "UpdateUserOrganizationById", logger))},
-		"Health":                     {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Health", logger))},
+		"CreateUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(gokitjwt.HTTPToContext(), opentracing.HTTPToContext(tracer, "CreateUserOrganizationById", logger))},
+		"DeleteUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(gokitjwt.HTTPToContext(), opentracing.HTTPToContext(tracer, "DeleteUserOrganizationById", logger))},
+		"GetUserOrganizationById":    {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(gokitjwt.HTTPToContext(), opentracing.HTTPToContext(tracer, "GetUserOrganizationById", logger))},
+		"GetUserOrganizations":       {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(gokitjwt.HTTPToContext(), opentracing.HTTPToContext(tracer, "GetUserOrganizations", logger))},
+		"UpdateUserOrganizationById": {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(gokitjwt.HTTPToContext(), opentracing.HTTPToContext(tracer, "UpdateUserOrganizationById", logger))},
+		"Health":                     {http.ServerErrorEncoder(http1.ErrorEncoder), http.ServerErrorLogger(logger), http.ServerBefore(gokitjwt.HTTPToContext(), opentracing.HTTPToContext(tracer, "Health", logger))},
 	}
 	return options
 }

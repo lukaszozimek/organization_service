@@ -3,6 +3,7 @@ module github.com/lukaszozimek/organization_service
 go 1.13
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-kit/kit v0.8.0
 	github.com/golang/protobuf v1.3.2
 	github.com/gorilla/handlers v1.4.2
