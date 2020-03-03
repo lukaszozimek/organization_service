@@ -9,15 +9,37 @@ import (
 	"reflect"
 )
 
-// CreateUserOrganizationByIdRequest collects the request parameters for the CreateUserOrganizationById method.
+// Error Bad Request
+// swagger:response badReq
+type swaggReqBadRequest struct {
+	// in:body
+	Body struct {
+		// HTTP status code 400 -  Bad Request
+		Code int `json:"code"`
+	}
+}
+
+// Error Not Found
+// swagger:response notFoundReq
+type swaggReqNotFound struct {
+	// in:body
+	Body struct {
+		// HTTP status code 404 -  Not Found
+		Code int `json:"code"`
+	}
+}
+
 type CreateUserOrganizationByIdRequest struct {
 	Organization model.Organization `json:"organization"`
 }
 
-// CreateUserOrganizationByIdResponse collects the response parameters for the CreateUserOrganizationById method.
+// CreateUserOrganizationByIdResponse.
+// swagger:response createUserOrganizationByIdResponse
 type CreateUserOrganizationByIdResponse struct {
+	// in: body
 	Organization model.Organization `json:"organization"`
-	Err          error              `json:"err"`
+	//swagger:ignore
+	Err error `json:"err"`
 }
 
 // MakeCreateUserOrganizationByIdEndpoint returns an endpoint that invokes CreateUserOrganizationById on the service.
@@ -42,10 +64,13 @@ type DeleteUserOrganizationByIdRequest struct {
 	OrganizationId string `json:"organization_id"`
 }
 
-// DeleteUserOrganizationByIdResponse collects the response parameters for the DeleteUserOrganizationById method.
+// DeleteUserOrganizationByIdResponse.
+// swagger:response deleteUserOrganizationByIdResponse
 type DeleteUserOrganizationByIdResponse struct {
+	// in: body
 	Organization model.Organization `json:"organization"`
-	Err          error              `json:"err"`
+	//swagger:ignore
+	Err error `json:"err"`
 }
 
 // MakeDeleteUserOrganizationByIdEndpoint returns an endpoint that invokes DeleteUserOrganizationById on the service.
@@ -70,10 +95,13 @@ type GetUserOrganizationByIdRequest struct {
 	OrganizationId string `json:"organization_id"`
 }
 
-// GetUserOrganizationByIdResponse collects the response parameters for the GetUserOrganizationById method.
+// GetUserOrganizationByIdResponse.
+// swagger:response getUserOrganizationByIdResponse
 type GetUserOrganizationByIdResponse struct {
+	// in: body
 	Organization model.Organization `json:"organization"`
-	Err          error              `json:"err"`
+	//swagger:ignore
+	Err error `json:"err"`
 }
 
 // MakeGetUserOrganizationByIdEndpoint returns an endpoint that invokes GetUserOrganizationById on the service.
@@ -96,10 +124,13 @@ func (r GetUserOrganizationByIdResponse) Failed() error {
 // GetUserOrganizationsRequest collects the request parameters for the GetUserOrganizations method.
 type GetUserOrganizationsRequest struct{}
 
-// GetUserOrganizationsResponse collects the response parameters for the GetUserOrganizations method.
+// GetUserOrganizationsResponse.
+// swagger:response getUserOrganizationsResponse
 type GetUserOrganizationsResponse struct {
+	// in: body
 	Organization []model.Organization `json:"organization"`
-	Err          error                `json:"err"`
+	//swagger:ignore
+	Err error `json:"err"`
 }
 
 // MakeGetUserOrganizationsEndpoint returns an endpoint that invokes GetUserOrganizations on the service.
@@ -123,10 +154,13 @@ type UpdateUserOrganizationByIdRequest struct {
 	Organization model.Organization `json:"organization"`
 }
 
-// UpdateUserOrganizationByIdResponse collects the response parameters for the UpdateUserOrganizationById method.
+// UpdateUserOrganizationByIdResponse.
+// swagger:response updateUserOrganizationByIdResponse
 type UpdateUserOrganizationByIdResponse struct {
+	// in: body
 	Organization model.Organization `json:"organization"`
-	Err          error              `json:"err"`
+	//swagger:ignore
+	Err error `json:"err"`
 }
 
 // MakeUpdateUserOrganizationByIdEndpoint returns an endpoint that invokes UpdateUserOrganizationById on the service.

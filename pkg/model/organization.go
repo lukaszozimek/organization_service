@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// swagger:model
 type Organization struct {
 	gorm.Model
 	Name   string `json:"name"`

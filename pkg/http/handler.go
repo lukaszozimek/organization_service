@@ -20,7 +20,29 @@ var keys = func(token *jwt.Token) (interface{}, error) {
 	return key, nil
 }
 
-// makeCreateUserOrganizationByIdHandler creates the handler logic
+// swagger:operation POST /api/v1/organization CreateUserOrganizationById
+// ---
+// summary: Create Organization.
+// description: "Create Organization"
+// operationId: "createUserOrganizationById"
+// produces:
+//  - "application/json"
+// consumes:
+//  - "application/json"
+// parameters:
+//   - in: "body"
+//     name: "body"
+//     description: "Update Organization Object"
+//     required: true
+//     schema:
+//       $ref: "#/definitions/Organization"
+// responses:
+//   "200":
+//    "$ref": "#/responses/createUserOrganizationByIdResponse"
+//   "400":
+//    "$ref": "#/responses/badReq"
+//   "404":
+//     "$ref": "#/responses/notFoundReq"
 func makeCreateUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
 	m.Methods("POST").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.CreateUserOrganizationByIdEndpoint), decodeCreateUserOrganizationByIdRequest, encodeCreateUserOrganizationByIdResponse, options...)))
 }
@@ -45,7 +67,29 @@ func encodeCreateUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 	return
 }
 
-// makeDeleteUserOrganizationByIdHandler creates the handler logic
+// swagger:operation DELETE /api/v1/organization/{organizationId} DeleteUserOrganizationById
+// ---
+// summary: Delete Organization ById.
+// description: "Delete Organization By ID"
+// operationId: "deleteUserOrganizationById"
+// parameters:
+//   - name: "organizationId"
+//     in: "path"
+//     description: "organizationId"
+//     required: true
+//     type: "integer"
+//     format: "int64"
+// produces:
+//  - "application/json"
+// consumes:
+//  - "application/json"
+// responses:
+//   "200":
+//    "$ref": "#/responses/deleteUserOrganizationByIdResponse"
+//   "400":
+//    "$ref": "#/responses/badReq"
+//   "404":
+//     "$ref": "#/responses/notFoundReq"
 func makeDeleteUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
 	m.Methods("DELETE").Path("/api/v1/organization/{organizationId}").Handler((handlers.CORS(handlers.AllowedMethods([]string{"DELETE"}), handlers.AllowedOrigins([]string{"*"})))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.DeleteUserOrganizationByIdEndpoint), decodeDeleteUserOrganizationByIdRequest, encodeDeleteUserOrganizationByIdResponse, options...)))
 }
@@ -73,7 +117,29 @@ func encodeDeleteUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 	return
 }
 
-// makeGetUserOrganizationByIdHandler creates the handler logic
+// swagger:operation GET /api/v1/organization/{organizationId} GetUserOrganizationById
+// ---
+// summary: Find Organization ById.
+// description: "Find Organization By ID"
+// operationId: "getUserOrganizationById"
+// parameters:
+//   - name: "organizationId"
+//     in: "path"
+//     description: "organizationId"
+//     required: true
+//     type: "integer"
+//     format: "int64"
+// produces:
+//  - "application/json"
+// consumes:
+//  - "application/json"
+// responses:
+//   "200":
+//    "$ref": "#/responses/deleteUserOrganizationByIdResponse"
+//   "400":
+//    "$ref": "#/responses/badReq"
+//   "404":
+//     "$ref": "#/responses/notFoundReq"
 func makeGetUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
 	m.Methods("GET").Path("/api/v1/organization/{organizationId}").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.GetUserOrganizationByIdEndpoint), decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
 }
@@ -125,7 +191,29 @@ func encodeGetUserOrganizationsResponse(ctx context.Context, w http1.ResponseWri
 	return
 }
 
-// makeUpdateUserOrganizationByIdHandler creates the handler logic
+// swagger:operation PUT /api/v1/organization GetUserOrganizationById
+// ---
+// summary: Update Organization.
+// description: "Update Organization"
+// operationId: "updateUserOrganizationById"
+// parameters:
+//   - in: "body"
+//     name: "body"
+//     description: "Update Organization Object"
+//     required: true
+//     schema:
+//       $ref: "#/definitions/Organization"
+// produces:
+//  - "application/json"
+// consumes:
+//  - "application/json"
+// responses:
+//   "200":
+//    "$ref": "#/responses/updateUserOrganizationByIdResponse"
+//   "400":
+//    "$ref": "#/responses/badReq"
+//   "404":
+//     "$ref": "#/responses/notFoundReq"
 func makeUpdateUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
 	m.Methods("PUT").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"PUT"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.UpdateUserOrganizationByIdEndpoint), decodeUpdateUserOrganizationByIdRequest, encodeUpdateUserOrganizationByIdResponse, options...)))
 }
@@ -191,21 +279,3 @@ func err2code(err error) int {
 type errorWrapper struct {
 	Error string `json:"error"`
 }
-
-//func AuthMiddleware(next http1.Handler) http1.Handler {
-//	return http1.HandlerFunc(func(w http1.ResponseWriter, r *http1.Request) {
-//
-//		authToken := r.Header.Get("Authorization")
-//		if len(authToken) == 0 || authToken != authToken {
-//			// Report Unauthorized
-//			w.Header().Add("Content-Type", "application/json")
-//			w.WriteHeader(http1.StatusUnauthorized)
-//			io.WriteString(w, `{"error":"invalid_key"}`)
-//			return
-//		}
-//		ctx := r.Context()
-//		ctx = context.WithValue(ctx, "JWTToken", authToken)
-//
-//		next.ServeHTTP(w, r)
-//	})
-//}
