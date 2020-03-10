@@ -15,7 +15,7 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
   - task: Go@0
     inputs:
-      command: 'build'
+      command: 'build -v ./...'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
   - task: CopyFiles@2
     inputs:
