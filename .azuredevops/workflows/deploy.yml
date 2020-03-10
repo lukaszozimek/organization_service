@@ -30,3 +30,6 @@ steps:
       repository: 'injectit/organization'
       dockerfile: '**/docker/Dockerfile'
       containerRegistry: 'InjectIT'
+      tags: |
+        $(Build.BuildId)
+        latest
