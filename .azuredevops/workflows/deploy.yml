@@ -29,7 +29,7 @@ steps:
     inputs:
       command: buildAndPush
       repository: 'injectit/organization'
-      dockerfile: '**/docker/Dockerfile'
+      dockerfile: '**/Dockerfile'
       containerRegistry: 'InjectIT'
       tags: |
         $(Build.BuildId)
