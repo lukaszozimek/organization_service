@@ -8,6 +8,6 @@ RUN curl https://glide.sh/get | sh
 RUN go get  github.com/canthefason/go-watcher
 RUN go install github.com/canthefason/go-watcher/cmd/watcher
 
-RUN cd /go/src/github.com/kujtimiihoxha/todo-gokit-demo && glide install
+RUN cd /go/src/github.com/kujtimiihoxha/todo-gokit-demo && go get  -t -v ./...
 
 ENTRYPOINT  watcher -run github.com/kujtimiihoxha/todo-gokit-demo/todo/cmd -watch github.com/kujtimiihoxha/todo-gokit-demo/todo
