@@ -1,9 +1,28 @@
-FROM golang
+# Dockerfile References: https://docs.docker.com/engine/reference/builder/
 
-RUN mkdir -p /go/src/github.com/lukaszozimek/organization_service
+# Start from the latest golang base image
+FROM golang:latest
 
-ADD . /go/src/github.com/lukaszozimek/organization_service
+# Add Maintainer Info
+LABEL maintainer="Inject IT <contact@injectit.io>"
 
-RUN cd /go/src/github.com/lukaszozimek/organization_service && go mod download
+# Set the Current Working Directory inside the container
+WORKDIR /app
 
-ENTRYPOINT  watcher -run github.com/lukaszozimek/organization_service/cmd -watch github.com/lukaszozimek/organization_service
+# Copy go mod and sum files
+COPY go.mod go.sum ./
+
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+RUN go mod download
+
+# Copy the source from the current directory to the Working Directory inside the container
+COPY . .
+
+# Build the Go app
+RUN go build cmd/main.go
+
+# Expose port 8080 to the outside world
+EXPOSE 8080
+
+# Command to run the executable
+CMD ["./main"]
