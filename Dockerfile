@@ -5,6 +5,8 @@ FROM golang:latest
 
 # Add Maintainer Info
 LABEL maintainer="Inject IT <contact@injectit.io>"
+ENV GOPRIVATE="github.com/lukaszozimek"
+RUN git config --global url."https://eea843361a185d3b59a24b03d42c3724ba64eb15:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
