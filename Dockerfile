@@ -27,5 +27,6 @@ RUN go build cmd/main.go
 EXPOSE 8088
 # Grpc server
 EXPOSE 8086
+
 # Command to run the executable
-CMD ["./cmd/main"]
+CMD ["./main"]
