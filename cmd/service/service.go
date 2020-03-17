@@ -35,11 +35,11 @@ var logger log.Logger
 // Define our flags. Your service probably won't need to bind listeners for
 // all* supported transports, but we do it here for demonstration purposes.
 var fs = flag.NewFlagSet("organization_service", flag.ExitOnError)
-var consulAddr = GetEnvOrDefault("CONSUL_ADDR", "localhost")
-var consulPort = GetEnvOrDefault("CONSUL_PORT", ":8500")
-var debugAddr = GetEnvOrDefault("DEBUG_ADDR", ":8088")
-var httpAddr = GetEnvOrDefault("HTTP_ADDR", ":8085")
-var grpcAddr = GetEnvOrDefault("GRPC-ADDR", "0.0.0.0:8086")
+var consulAddr = util.GetEnvOrDefault("CONSUL_ADDR", "localhost")
+var consulPort = util.GetEnvOrDefault("CONSUL_PORT", ":8500")
+var debugAddr = util.GetEnvOrDefault("DEBUG_ADDR", ":8088")
+var httpAddr = util.GetEnvOrDefault("HTTP_ADDR", ":8085")
+var grpcAddr = util.GetEnvOrDefault("GRPC-ADDR", "0.0.0.0:8086")
 
 func Run() {
 	fs.Parse(os.Args[1:])
@@ -163,7 +163,7 @@ func initCancelInterrupt(g *group.Group) {
 		close(cancelInterrupt)
 	})
 }
-func GetEnvOrDefault(key, fallback string) string {
+func util.GetEnvOrDefault(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}
