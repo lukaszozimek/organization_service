@@ -163,9 +163,3 @@ func initCancelInterrupt(g *group.Group) {
 		close(cancelInterrupt)
 	})
 }
-func util.GetEnvOrDefault(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
-}
