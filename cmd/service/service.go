@@ -9,6 +9,7 @@ import (
 	"github.com/lukaszozimek/organization_service/pkg/endpoint"
 	"github.com/lukaszozimek/organization_service/pkg/grpc"
 	"github.com/lukaszozimek/organization_service/pkg/grpc/pb"
+	"github.com/lukaszozimek/organization_service/pkg/util"
 	grpc1 "google.golang.org/grpc"
 
 	"github.com/lukaszozimek/organization_service/pkg/http"
@@ -34,11 +35,11 @@ var logger log.Logger
 // Define our flags. Your service probably won't need to bind listeners for
 // all* supported transports, but we do it here for demonstration purposes.
 var fs = flag.NewFlagSet("organization_service", flag.ExitOnError)
-var consulAddr = getEnvOrDefault("CONSUL_ADDR", "localhost")
-var consulPort = getEnvOrDefault("CONSUL_PORT", ":8500")
-var debugAddr = getEnvOrDefault("DEBUG_ADDR", ":8088")
-var httpAddr = getEnvOrDefault("HTTP_ADDR", ":8085")
-var grpcAddr = getEnvOrDefault("GRPC-ADDR", "0.0.0.0:8086")
+var consulAddr = GetEnvOrDefault("CONSUL_ADDR", "localhost")
+var consulPort = GetEnvOrDefault("CONSUL_PORT", ":8500")
+var debugAddr = GetEnvOrDefault("DEBUG_ADDR", ":8088")
+var httpAddr = GetEnvOrDefault("HTTP_ADDR", ":8085")
+var grpcAddr = GetEnvOrDefault("GRPC-ADDR", "0.0.0.0:8086")
 
 func Run() {
 	fs.Parse(os.Args[1:])
@@ -162,7 +163,7 @@ func initCancelInterrupt(g *group.Group) {
 		close(cancelInterrupt)
 	})
 }
-func getEnvOrDefault(key, fallback string) string {
+func GetEnvOrDefault(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}
