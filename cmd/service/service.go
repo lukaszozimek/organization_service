@@ -34,19 +34,11 @@ var logger log.Logger
 // Define our flags. Your service probably won't need to bind listeners for
 // all* supported transports, but we do it here for demonstration purposes.
 var fs = flag.NewFlagSet("organization_service", flag.ExitOnError)
-var debugAddr = fs.String("debug.addr", ":8088", "Debug and metrics listen address")
-var httpAddr = fs.String("http-addr", ":8085", "HTTP listen address")
-var consulAddr = flag.String("consul.addr", "localhost", "consul address")
-var consulPort = flag.String("consul.port", "8500", "consul port")
-
-var grpcAddr = fs.String("grpc-addr", ":8086", "gRPC listen address")
-var thriftAddr = fs.String("thrift-addr", ":8087", "Thrift listen address")
-var thriftProtocol = fs.String("thrift-protocol", "binary", "binary, compact, json, simplejson")
-var thriftBuffer = fs.Int("thrift-buffer", 0, "0 for unbuffered")
-var thriftFramed = fs.Bool("thrift-framed", false, "true to enable framing")
-var zipkinURL = fs.String("zipkin-url", "", "Enable Zipkin tracing via a collector URL e.g. http://localhost:9411/api/v1/spans")
-var lightstepToken = fs.String("lightstep-token", "", "Enable LightStep tracing via a LightStep access token")
-var appdashAddr = fs.String("appdash-addr", "", "Enable Appdash tracing via an Appdash server host:port")
+var consulAddr = getEnvOrDefault("CONSUL_ADDR", "localhost")
+var consulPort = getEnvOrDefault("CONSUL_PORT", ":8500")
+var debugAddr = getEnvOrDefault("DEBUG_ADDR", ":8088")
+var httpAddr = getEnvOrDefault("HTTP_ADDR", ":8085")
+var grpcAddr = getEnvOrDefault("GRPC-ADDR", "8086")
 
 func Run() {
 	fs.Parse(os.Args[1:])
@@ -70,19 +62,19 @@ func Run() {
 func initHttpHandler(endpoints endpoint.Endpoints, g *group.Group) {
 	options := defaultHttpOptions(logger, tracer)
 	// Add your http options here
-	//	registar := Register(*consulAddr, *consulPort, "organization.service.consul", "8081")
+	registar := Register(consulAddr, consulPort, "organization.service.consul", httpAddr)
 
 	httpHandler := http.NewHTTPHandler(endpoints, options)
-	httpListener, err := net.Listen("tcp", *httpAddr)
+	httpListener, err := net.Listen("tcp", httpAddr)
 	if err != nil {
 		logger.Log("transport", "HTTP", "during", "Listen", "err", err)
 	}
 	g.Add(func() error {
-		//	registar.Register()
-		logger.Log("transport", "HTTP", "addr", *httpAddr)
+		registar.Register()
+		logger.Log("transport", "HTTP", "addr", httpAddr)
 		return http1.Serve(httpListener, httpHandler)
 	}, func(error) {
-		//		registar.Deregister()
+		registar.Deregister()
 		httpListener.Close()
 	})
 
@@ -91,12 +83,12 @@ func initGRPCHandler(endpoints endpoint.Endpoints, g *group.Group) {
 	options := defaultGRPCOptions(logger, tracer)
 
 	grpcServer := grpc.NewGRPCServer(endpoints, options)
-	grpcListener, err := net.Listen("tcp", *grpcAddr)
+	grpcListener, err := net.Listen("tcp", grpcAddr)
 	if err != nil {
 		logger.Log("transport", "gRPC", "during", "Listen", "err", err)
 	}
 	g.Add(func() error {
-		logger.Log("transport", "gRPC", "addr", *grpcAddr)
+		logger.Log("transport", "gRPC", "addr", grpcAddr)
 		baseServer := grpc1.NewServer()
 		pb.RegisterOrganizationServer(baseServer, grpcServer)
 		return baseServer.Serve(grpcListener)
@@ -144,12 +136,12 @@ func getEndpointMiddleware(logger log.Logger) (mw map[string][]endpoint1.Middlew
 }
 func initMetricsEndpoint(g *group.Group) {
 	http1.DefaultServeMux.Handle("/metrics", promhttp.Handler())
-	debugListener, err := net.Listen("tcp", *debugAddr)
+	debugListener, err := net.Listen("tcp", debugAddr)
 	if err != nil {
 		logger.Log("transport", "debug/HTTP", "during", "Listen", "err", err)
 	}
 	g.Add(func() error {
-		logger.Log("transport", "debug/HTTP", "addr", *debugAddr)
+		logger.Log("transport", "debug/HTTP", "addr", debugAddr)
 		return http1.Serve(debugListener, http1.DefaultServeMux)
 	}, func(error) {
 		debugListener.Close()
@@ -169,4 +161,10 @@ func initCancelInterrupt(g *group.Group) {
 	}, func(error) {
 		close(cancelInterrupt)
 	})
+}
+func getEnvOrDefault(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
