@@ -39,7 +39,7 @@ func Register(consulAddress string,
 	}
 
 	check := api.AgentServiceCheck{
-		HTTP:     "http://" + advertiseAddress + ":" + advertisePort + "/api/v1/organization/health",
+		HTTP:     "http://" + advertiseAddress + advertisePort + "/api/v1/organization/health",
 		Interval: "10s",
 		Timeout:  "1s",
 		Notes:    "Basic health checks",
