@@ -38,7 +38,7 @@ var consulAddr = getEnvOrDefault("CONSUL_ADDR", "localhost")
 var consulPort = getEnvOrDefault("CONSUL_PORT", ":8500")
 var debugAddr = getEnvOrDefault("DEBUG_ADDR", ":8088")
 var httpAddr = getEnvOrDefault("HTTP_ADDR", ":8085")
-var grpcAddr = getEnvOrDefault("GRPC-ADDR", "8086")
+var grpcAddr = getEnvOrDefault("GRPC-ADDR", "0.0.0.0:8086")
 
 func Run() {
 	fs.Parse(os.Args[1:])
