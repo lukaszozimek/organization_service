@@ -23,10 +23,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-
-	"gopkg.in/oauth2.v3/manage"
-	"gopkg.in/oauth2.v3/server"
-	"gopkg.in/oauth2.v3/store"
 )
 
 var tracer opentracinggo.Tracer
@@ -35,9 +31,9 @@ var logger log.Logger
 // Define our flags. Your service probably won't need to bind listeners for
 // all* supported transports, but we do it here for demonstration purposes.
 var fs = flag.NewFlagSet("organization_service", flag.ExitOnError)
-var consulAddr = util.GetEnvOrDefault("CONSUL_ADDR", "localhost")
-var consulPort = util.GetEnvOrDefault("CONSUL_PORT", ":8500")
-var debugAddr = util.GetEnvOrDefault("DEBUG_ADDR", ":8088")
+var consulAddr = util.GetEnvOrDefault("CONSUL_ADDR", "127.0.0.1")
+var consulPort = util.GetEnvOrDefault("CONSUL_PORT", "8500")
+var debugAddr = util.GetEnvOrDefault("DEBUG_ADDR", "0.0.0.0:8088")
 var httpAddr = util.GetEnvOrDefault("HTTP_ADDR", ":8085")
 var grpcAddr = util.GetEnvOrDefault("GRPC-ADDR", "0.0.0.0:8086")
 
@@ -108,29 +104,13 @@ func getServiceMiddleware(logger log.Logger) (mw []service.Middleware) {
 }
 func getEndpointMiddleware(logger log.Logger) (mw map[string][]endpoint1.Middleware) {
 	mw = map[string][]endpoint1.Middleware{}
-	manager := manage.NewDefaultManager()
-	manager.SetAuthorizeCodeTokenCfg(manage.DefaultAuthorizeCodeTokenCfg)
-
-	// token memory store
-	manager.MustTokenStorage(store.NewMemoryTokenStore())
-
-	// client memory store
-	clientStore := store.NewClientStore()
-
-	manager.MapClientStorage(clientStore)
-
-	srv := server.NewDefaultServer(manager)
-	srv.SetAllowGetAccessRequest(true)
-	srv.SetClientInfoHandler(server.ClientFormHandler)
-	manager.SetRefreshTokenCfg(manage.DefaultRefreshTokenCfg)
-
 	duration := prometheus.NewSummaryFrom(prometheus1.SummaryOpts{
 		Help:      "Request duration in seconds.",
 		Name:      "request_duration_seconds",
 		Namespace: "example",
 		Subsystem: "organization_service",
 	}, []string{"method", "success"})
-	addDefaultEndpointMiddleware(logger, duration, srv, mw)
+	addDefaultEndpointMiddleware(logger, duration, mw)
 	// Add you endpoint middleware here
 
 	return

@@ -25,7 +25,7 @@ func init() {
 
 	dbHost := util.GetEnvOrDefault("DB_HOST", "'127.0.0.1'")
 	dbPort := util.GetEnvOrDefault("DB_PORT", "'5455'")
-	dbUri := fmt.Sprintf("host=%s port=%s user=%s db	name=%s sslmode=disable password=%s", dbHost, dbPort, username, dbName, password) //Build connection string
+	dbUri := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, dbPort, username, dbName, password) //Build connection string
 	fmt.Println(dbUri)
 
 	conn, err := gorm.Open("postgres", dbUri)

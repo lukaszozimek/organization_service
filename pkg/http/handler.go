@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	gokitjwt "github.com/go-kit/kit/auth/jwt"
 	"github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -14,11 +12,6 @@ import (
 
 	http1 "net/http"
 )
-
-var key = []byte("supersecret")
-var keys = func(token *jwt.Token) (interface{}, error) {
-	return key, nil
-}
 
 // swagger:operation POST /api/v1/organization CreateUserOrganizationById
 // ---
@@ -44,7 +37,7 @@ var keys = func(token *jwt.Token) (interface{}, error) {
 //   "404":
 //     "$ref": "#/responses/notFoundReq"
 func makeCreateUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("POST").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.CreateUserOrganizationByIdEndpoint), decodeCreateUserOrganizationByIdRequest, encodeCreateUserOrganizationByIdResponse, options...)))
+	m.Methods("POST").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.CreateUserOrganizationByIdEndpoint, decodeCreateUserOrganizationByIdRequest, encodeCreateUserOrganizationByIdResponse, options...)))
 }
 
 // decodeCreateUserOrganizationByIdRequest is a transport/http.DecodeRequestFunc that decodes a
@@ -91,7 +84,7 @@ func encodeCreateUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 //   "404":
 //     "$ref": "#/responses/notFoundReq"
 func makeDeleteUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("DELETE").Path("/api/v1/organization/{organizationId}").Handler((handlers.CORS(handlers.AllowedMethods([]string{"DELETE"}), handlers.AllowedOrigins([]string{"*"})))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.DeleteUserOrganizationByIdEndpoint), decodeDeleteUserOrganizationByIdRequest, encodeDeleteUserOrganizationByIdResponse, options...)))
+	m.Methods("DELETE").Path("/api/v1/organization/{organizationId}").Handler((handlers.CORS(handlers.AllowedMethods([]string{"DELETE"}), handlers.AllowedOrigins([]string{"*"})))(http.NewServer(endpoints.DeleteUserOrganizationByIdEndpoint, decodeDeleteUserOrganizationByIdRequest, encodeDeleteUserOrganizationByIdResponse, options...)))
 }
 
 // decodeDeleteUserOrganizationByIdRequest is a transport/http.DecodeRequestFunc that decodes a
@@ -141,7 +134,7 @@ func encodeDeleteUserOrganizationByIdResponse(ctx context.Context, w http1.Respo
 //   "404":
 //     "$ref": "#/responses/notFoundReq"
 func makeGetUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("GET").Path("/api/v1/organization/{organizationId}").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.GetUserOrganizationByIdEndpoint), decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
+	m.Methods("GET").Path("/api/v1/organization/:organizationId").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetUserOrganizationByIdEndpoint, decodeGetUserOrganizationByIdRequest, encodeGetUserOrganizationByIdResponse, options...)))
 }
 
 // decodeGetUserOrganizationByIdRequest is a transport/http.DecodeRequestFunc that decodes a
@@ -169,7 +162,7 @@ func encodeGetUserOrganizationByIdResponse(ctx context.Context, w http1.Response
 
 // makeGetUserOrganizationsHandler creates the handler logic
 func makeGetUserOrganizationsHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("GET").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.GetUserOrganizationsEndpoint), decodeGetUserOrganizationsRequest, encodeGetUserOrganizationsResponse, options...)))
+	m.Methods("GET").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetUserOrganizationsEndpoint, decodeGetUserOrganizationsRequest, encodeGetUserOrganizationsResponse, options...)))
 }
 
 // decodeGetUserOrganizationsRequest is a transport/http.DecodeRequestFunc that decodes a
@@ -215,7 +208,7 @@ func encodeGetUserOrganizationsResponse(ctx context.Context, w http1.ResponseWri
 //   "404":
 //     "$ref": "#/responses/notFoundReq"
 func makeUpdateUserOrganizationByIdHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("PUT").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"PUT"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(gokitjwt.NewParser(keys, jwt.SigningMethodHS256, gokitjwt.StandardClaimsFactory)(endpoints.UpdateUserOrganizationByIdEndpoint), decodeUpdateUserOrganizationByIdRequest, encodeUpdateUserOrganizationByIdResponse, options...)))
+	m.Methods("PUT").Path("/api/v1/organization").Handler(handlers.CORS(handlers.AllowedMethods([]string{"PUT"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.UpdateUserOrganizationByIdEndpoint, decodeUpdateUserOrganizationByIdRequest, encodeUpdateUserOrganizationByIdResponse, options...)))
 }
 
 // decodeUpdateUserOrganizationByIdRequest is a transport/http.DecodeRequestFunc that decodes a

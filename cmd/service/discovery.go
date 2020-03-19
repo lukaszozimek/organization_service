@@ -1,13 +1,16 @@
 package service
 
 import (
+	"fmt"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/sd"
 	consulsd "github.com/go-kit/kit/sd/consul"
 	"github.com/hashicorp/consul/api"
 	"math/rand"
 	"os"
+	"os/exec"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -37,20 +40,28 @@ func Register(consulAddress string,
 		}
 		client = consulsd.NewClient(consulClient)
 	}
-
+	out, err := exec.Command("awk", "END{print $1}",
+		"/etc/hosts").Output()
+	if err != nil {
+		fmt.Printf("%s", err)
+	}
+	ipAddress := strings.Replace(string(out), "\n", "", -1)
+	if ipAddress == "#" {
+		ipAddress = "127.0.0.1"
+	}
 	check := api.AgentServiceCheck{
-		HTTP:     "http://" + advertiseAddress + advertisePort + "/api/v1/organization/health",
+		HTTP:     "http://" + ipAddress + advertisePort + "/api/v1/organization/health",
 		Interval: "10s",
 		Timeout:  "1s",
 		Notes:    "Basic health checks",
 	}
 
-	port, _ := strconv.Atoi(advertisePort)
+	port, _ := strconv.Atoi(advertisePort[1:])
 	num := rand.Intn(100)
 	asr := api.AgentServiceRegistration{
 		ID:      "organization" + string(num),
 		Name:    "organization",
-		Address: advertiseAddress,
+		Address: ipAddress,
 		Port:    port,
 		Tags:    []string{"org"},
 		Check:   &check,
